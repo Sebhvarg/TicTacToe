@@ -12,6 +12,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TresEnRaya"
         tools:targetApi="31">
+        <meta-data
+            android:name="com.google.android.actions"
+            android:resource="@xml/style" />
+
+        <activity
+            android:name=".TicTacToe"
+            android:exported="true"
+            android:label="@string/title_activity_tic_tac_toe"
+            android:theme="@style/Theme.TresEnRaya" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
