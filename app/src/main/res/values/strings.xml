@@ -43,4 +43,6 @@
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
     <string name="title_activity_tic_tac_toe">TicTacToe</string>
+    <string name="title">Tic-Tac-Toe</string>
+
 </resources>
