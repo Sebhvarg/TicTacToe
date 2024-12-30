@@ -4,7 +4,9 @@
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
         <item name="backgroundColor">@color/primary_light</item>
+        <item name="android:buttonStyle">@style/Theme.TresEnRaya</item>
     </style>
 
-    <style name="Theme.TresEnRaya" parent="Base.Theme.TresEnRaya" />
+
+
 </resources>

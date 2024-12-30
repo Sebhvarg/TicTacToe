@@ -1,36 +1,54 @@
 package com.example.espol.ed.grupo3.tresenraya;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.espol.ed.grupo3.tresenraya.Modelo.Computadora;
 import com.example.espol.ed.grupo3.tresenraya.Modelo.Humano;
 import com.example.espol.ed.grupo3.tresenraya.Modelo.Jugador;
 
+import java.util.Objects;
+
 
 public class TicTacToe extends AppCompatActivity {
     private Jugador jugadorActual;
     private Button[][] botones;
-    private TextView tvTurno;
     private char[][] tablero = new char[3][3];
+
+    private TextView cputext;
+
+    private TextView playertext;
+
+    private ImageView cpuimg;
+
+    private ImageView playerimg;
 
     private void configurarBotones(Button boton, int fila, int columna) {
         boton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (boton.getText().toString().isEmpty()) {
+                    boton.setTextColor(Color.parseColor("#418FBF"));
                     boton.setText(jugadorActual.getTurno());
+
                     tablero[fila][columna] = jugadorActual.getTurno().charAt(0);
 
                     if (verificarVictoria('O')){
-                        tvTurno.setText("¡El humano ha ganado!");
                         deshabilitarBotones();
                     }
                     else if (esEmpate()){
-                        tvTurno.setText("¡EMPATE!");
+                        playertext.animate().alpha(0.1f).setDuration(200).start();
+                        playerimg.animate().alpha(0.1f).setDuration(200).start();
+                        cputext.animate().alpha(0.1f).setDuration(200).start();
+                        cpuimg.animate().alpha(0.1f).setDuration(200).start();
                         deshabilitarBotones();
                     } else{
                         cambiarTurno();
@@ -47,16 +65,37 @@ public class TicTacToe extends AppCompatActivity {
         }
 
         int[] mejorMovimiento = calcularMejorMovimiento();
+
+
         if (mejorMovimiento[0] != -1 && mejorMovimiento[1] != -1){
+            playertext.animate().alpha(0.2f).setDuration(500).start();
+            playerimg.animate().alpha(0.2f).setDuration(500).start();
+            cputext.animate().alpha(1f).setDuration(200).start();
+            cpuimg.animate().alpha(1f).setDuration(200).start();
             botones[mejorMovimiento[0]][mejorMovimiento[1]].setText("X");
             tablero[mejorMovimiento[0]][mejorMovimiento[1]] = 'X';
 
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                cputext.animate().alpha(0.3f).setDuration(500).start();
+                cpuimg.animate().alpha(0.3f).setDuration(500).start();
+                playertext.animate().alpha(1f).setDuration(200).start();
+                playerimg.animate().alpha(1f).setDuration(200).start();
+            }, 600);
+
+
+
+
+
+
             if (verificarVictoria('X')){
-                tvTurno.setText("¡La computadora ha ganado!");
                 deshabilitarBotones();
             } else if (esEmpate()){
-                tvTurno.setText("¡EMPATE!");
+                playertext.animate().alpha(0.1f).setDuration(200).start();
+                playerimg.animate().alpha(0.1f).setDuration(200).start();
+                cputext.animate().alpha(0.1f).setDuration(200).start();
+                cpuimg.animate().alpha(0.1f).setDuration(200).start();
                 deshabilitarBotones();
+
             } else{
                 cambiarTurno();
             }
@@ -67,6 +106,9 @@ public class TicTacToe extends AppCompatActivity {
         for (int i = 0; i < 3; i++){
             for (int j = 0; j < 3; j++){
                 botones[i][j].setEnabled(false);
+                botones[i][j].animate().alpha(0.3f).start();
+
+
             }
         }
     }
@@ -77,7 +119,14 @@ public class TicTacToe extends AppCompatActivity {
         } else{
             jugadorActual = new Humano();
         }
-        tvTurno.setText("Turno de " + jugadorActual.getTurno());
+        if(Objects.equals(jugadorActual.getTurno(), "X")){
+            cputext.animate().alpha(0.2f).setDuration(500).start();
+            cpuimg.animate().alpha(0.2f).setDuration(500).start();
+            playertext.animate().alpha(1f).setDuration(200).start();
+            playerimg.animate().alpha(1f).setDuration(200).start();
+
+
+        }
     }
 
     private boolean verificarVictoria(char turno) {
@@ -190,12 +239,16 @@ public class TicTacToe extends AppCompatActivity {
         setContentView(R.layout.activity_tic_tac_toe);
 
         jugadorActual = new Humano();
-        tvTurno = findViewById(R.id.tv_turn);
+        cputext = findViewById(R.id.cputext);
+        cpuimg = findViewById(R.id.cpuimg);
+        playertext = findViewById(R.id.playertext);
+        playerimg = findViewById(R.id.playerimg);
         GridLayout gridLayout = findViewById(R.id.gridLayout);
 
-        tvTurno.setText("Turno de " + jugadorActual.getTurno());
         botones = new Button[3][3];
         inicializarTablero();
+        cputext.animate().alpha(0.2f).setDuration(100).start();
+        cpuimg.animate().alpha(0.2f).setDuration(100).start();
 
         for (int i = 0; i < 3; i++){
             for (int j = 0; j < 3; j++){
