@@ -2,4 +2,12 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <!-- Light -->
+    <color name="backround_light">#F2F2F0</color>
+    <color name="primary_light">#418FBF</color>
+    <color name="secondary_light">#BF0413</color>
+    <color name="third_light">#F2B705</color>
+    <color name="winner">#F2A20C</color>
+    <!-- Dark -->
+
 </resources>
