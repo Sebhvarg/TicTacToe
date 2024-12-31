@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -16,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.espol.ed.grupo3.tresenraya.Modelo.Computadora;
 import com.example.espol.ed.grupo3.tresenraya.Modelo.Humano;
 import com.example.espol.ed.grupo3.tresenraya.Modelo.Jugador;
+import android.media.MediaPlayer;
 
 import java.util.Objects;
 
@@ -32,6 +34,8 @@ public class TicTacToe extends AppCompatActivity {
     private ImageView cpuimg;
 
     private ImageView playerimg;
+
+    private ImageButton btnexit;
 
     private void configurarBotones(Button boton, int fila, int columna) {
         boton.setOnClickListener(new View.OnClickListener() {
@@ -74,20 +78,24 @@ public class TicTacToe extends AppCompatActivity {
         }
 
         int[] mejorMovimiento = calcularMejorMovimiento();
+
         if (mejorMovimiento[0] != -1 && mejorMovimiento[1] != -1){
             playertext.animate().alpha(0.2f).setDuration(500).start();
             playerimg.animate().alpha(0.2f).setDuration(500).start();
             cputext.animate().alpha(1f).setDuration(200).start();
             cpuimg.animate().alpha(1f).setDuration(200).start();
-            botones[mejorMovimiento[0]][mejorMovimiento[1]].setText("X");
-            tablero[mejorMovimiento[0]][mejorMovimiento[1]] = 'X';
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                botones[mejorMovimiento[0]][mejorMovimiento[1]].setText("X");
+            }, 1000);
+                tablero[mejorMovimiento[0]][mejorMovimiento[1]] = 'X';
 
             new Handler(Looper.getMainLooper()).postDelayed(() -> {
                 cputext.animate().alpha(0.3f).setDuration(500).start();
                 cpuimg.animate().alpha(0.3f).setDuration(500).start();
                 playertext.animate().alpha(1f).setDuration(200).start();
                 playerimg.animate().alpha(1f).setDuration(200).start();
-            }, 600);
+            }, 800);
+
 
             if (verificarVictoria('X')) {
                 mostrarGanador("¡Computadora Ganadora!");
@@ -113,6 +121,7 @@ public class TicTacToe extends AppCompatActivity {
 
     private void cambiarTurno(){
         if (jugadorActual instanceof Humano){
+
             jugadorActual = new Computadora();
         } else{
             jugadorActual = new Humano();
@@ -122,6 +131,7 @@ public class TicTacToe extends AppCompatActivity {
             cpuimg.animate().alpha(0.2f).setDuration(500).start();
             playertext.animate().alpha(1f).setDuration(200).start();
             playerimg.animate().alpha(1f).setDuration(200).start();
+
         }
     }
 
@@ -154,7 +164,9 @@ public class TicTacToe extends AppCompatActivity {
 
 
     public int[] calcularMejorMovimiento() {
+
         int[] mejorMovimiento = {-1, -1};
+
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
@@ -168,6 +180,7 @@ public class TicTacToe extends AppCompatActivity {
                 }
             }
         }
+
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
@@ -290,10 +303,22 @@ public class TicTacToe extends AppCompatActivity {
         cpuimg = findViewById(R.id.cpuimg);
         playertext = findViewById(R.id.playertext);
         playerimg = findViewById(R.id.playerimg);
+        btnexit = findViewById(R.id.btnexit);
         GridLayout gridLayout = findViewById(R.id.gridLayout);
-
         botones = new Button[3][3];
+        btnexit.setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deshabilitarBotones();
+                Intent intent = new Intent(TicTacToe.this, MainActivity.class);
+                startActivity(intent);
+            }
+        }));
+        //Iniciar
+        ReproductorControlador.getInstance().play();
         inicializarTablero();
+
+
         cputext.animate().alpha(0.2f).setDuration(100).start();
         cpuimg.animate().alpha(0.2f).setDuration(100).start();
 

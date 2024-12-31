@@ -15,14 +15,28 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:gravity="center"
         android:orientation="horizontal">
 
         <TextView
             android:id="@+id/textView4"
+            android:layout_width="651dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/roboto_medium"
+            android:text="Abandonar juego"
+            android:textAlignment="textEnd"
+            android:textColor="@color/black" />
+
+        <ImageButton
+            android:id="@+id/btnexit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="boton salir" />
+            android:backgroundTint="#00FFFFFF"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/exit" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -58,7 +72,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="547dp"
+        android:layout_height="650dp"
         android:gravity="center"
         android:orientation="vertical">
 
