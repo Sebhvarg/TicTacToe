@@ -1,24 +1,31 @@
 package com.example.espol.ed.grupo3.tresenraya;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
-public class activity_ganador extends AppCompatActivity {
+public class GanadorActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_ganador);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
+
+        TextView textoGanador = findViewById(R.id.textoGanador);
+        Button botonReiniciar = findViewById(R.id.botonReiniciar);
+
+        // Obtén el nombre del ganador desde el intent
+        String ganador = getIntent().getStringExtra("GANADOR");
+        textoGanador.setText("¡" + ganador + " ganó!");
+
+        botonReiniciar.setOnClickListener(v -> {
+            // Reinicia el juego o regresa al menú principal
+            Intent intent = new Intent(GanadorActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
         });
     }
 }
