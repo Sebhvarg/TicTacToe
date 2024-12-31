@@ -275,6 +275,7 @@ public class TicTacToe extends AppCompatActivity {
 
         // Usar Handler para retrasar la llamada a startActivity
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
+
             // Animar al ganador o los elementos de la interfaz
             if (ganador.contains("Humano")) {
                 playertext.animate().alpha(1f).setDuration(500).start();
@@ -288,7 +289,7 @@ public class TicTacToe extends AppCompatActivity {
             Intent intent = new Intent(this, GanadorActivity.class);
             intent.putExtra("GANADOR", ganador);
             startActivity(intent);
-        }, 300); // Retraso de 300ms (ajustar si es necesario)
+        }, 2000); // Retraso de 300ms (ajustar si es necesario)
     }
 
 
