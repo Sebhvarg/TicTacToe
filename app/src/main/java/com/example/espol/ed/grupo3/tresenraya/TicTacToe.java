@@ -41,7 +41,7 @@ public class TicTacToe extends AppCompatActivity {
         boton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (boton.getText().toString().isEmpty()) {
+                if (boton.getText().toString().isEmpty() && jugadorActual instanceof Humano) { // Asegurarse de que sea el turno del humano
                     // Realizar el movimiento
                     boton.setTextColor(Color.parseColor("#418FBF"));
                     boton.setText(jugadorActual.getTurno());
@@ -49,21 +49,26 @@ public class TicTacToe extends AppCompatActivity {
                     // Actualizar el tablero
                     tablero[fila][columna] = jugadorActual.getTurno().charAt(0);
 
+                    // Deshabilitar botones inmediatamente después de realizar un movimiento
+                    deshabilitarBotones();
+
                     // Verificar si hay un ganador
                     if (verificarVictoria('O')) {  // Si el jugador humano gana
-                        mostrarGanador("¡Jugador Humano Ganador!");
+                        mostrarGanador("Humano");
                         deshabilitarBotones();
                     } else if (verificarVictoria('X')) {  // Si la computadora gana
-                        mostrarGanador("¡Computadora Ganadora!");
+                        mostrarGanador("Computadora");
                         deshabilitarBotones();
                     } else if (esEmpate()) {  // Si es empate
-                        mostrarGanador("¡Empate!");
+                        mostrarGanador("Empate");
                         deshabilitarBotones();
                     } else {
                         // Cambiar el turno y llamar a la computadora si es necesario
                         cambiarTurno();
                         if (jugadorActual.getTurno().equals("X")) {  // Si es el turno de la computadora
                             turnoComputadora();
+                        } else {
+                            habilitarBotones();  // Habilitar botones después del turno del humano
                         }
                     }
                 }
@@ -72,48 +77,79 @@ public class TicTacToe extends AppCompatActivity {
     }
 
 
+
     private void turnoComputadora() {
         if (verificarVictoria('O') || verificarVictoria('X') || esEmpate()) {
             return;  // No hacer nada si ya hay un ganador o empate
         }
 
+        // Deshabilitar botones mientras la computadora hace su movimiento
+        deshabilitarBotones();
+
         int[] mejorMovimiento = calcularMejorMovimiento();
 
-        if (mejorMovimiento[0] != -1 && mejorMovimiento[1] != -1){
+        if (mejorMovimiento[0] != -1 && mejorMovimiento[1] != -1) {
             playertext.animate().alpha(0.2f).setDuration(500).start();
             playerimg.animate().alpha(0.2f).setDuration(500).start();
             cputext.animate().alpha(1f).setDuration(200).start();
             cpuimg.animate().alpha(1f).setDuration(200).start();
+
+            // Hacer el movimiento de la computadora
             new Handler(Looper.getMainLooper()).postDelayed(() -> {
                 botones[mejorMovimiento[0]][mejorMovimiento[1]].setText("X");
+                tablero[mejorMovimiento[0]][mejorMovimiento[1]] = 'X';
+
+                // Cambiar la visibilidad de los elementos después de un pequeño retraso
+                new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                    cputext.animate().alpha(0.3f).setDuration(500).start();
+                    cpuimg.animate().alpha(0.3f).setDuration(500).start();
+                    playertext.animate().alpha(1f).setDuration(200).start();
+                    playerimg.animate().alpha(1f).setDuration(200).start();
+                }, 800);
+
+                // Verificar si hay un ganador o empate después del movimiento de la computadora
+                if (verificarVictoria('X')) {
+                    mostrarGanador("Computadora");
+                    deshabilitarBotones();
+                } else if (esEmpate()) {
+                    mostrarGanador("Empate");
+                    deshabilitarBotones();
+                } else {
+                    cambiarTurno();
+                    habilitarBotonesConRetraso();  // Habilitar botones después del turno de la computadora
+                }
             }, 1000);
-            tablero[mejorMovimiento[0]][mejorMovimiento[1]] = 'X';
-
-            new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                cputext.animate().alpha(0.3f).setDuration(500).start();
-                cpuimg.animate().alpha(0.3f).setDuration(500).start();
-                playertext.animate().alpha(1f).setDuration(200).start();
-                playerimg.animate().alpha(1f).setDuration(200).start();
-            }, 800);
-
-
-            if (verificarVictoria('X')) {
-                mostrarGanador("¡Computadora Ganadora!");
-                deshabilitarBotones();
-            } else if (esEmpate()) {
-                mostrarGanador("¡Empate!");
-                deshabilitarBotones();
-            } else {
-                cambiarTurno();
-            }
         }
     }
+
+
+
 
     private void deshabilitarBotones() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 botones[i][j].setEnabled(false);
-                botones[i][j].animate().alpha(0.3f).start();
+            }
+        }
+    }
+
+    // Habilitar después de 1 segundo
+    private void habilitarBotonesConRetraso() {
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                habilitarBotones();  // Llamar a habilitar botones después del retraso
+            }
+        }, 1000);  // 1000 ms = 1 segundo
+    }
+
+
+    private void habilitarBotones() {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (botones[i][j].getText().toString().isEmpty()) {
+                    botones[i][j].setEnabled(true);  // Habilitar solo los botones vacíos
+                }
             }
         }
     }
@@ -121,19 +157,21 @@ public class TicTacToe extends AppCompatActivity {
 
     private void cambiarTurno(){
         if (jugadorActual instanceof Humano){
-
             jugadorActual = new Computadora();
+            deshabilitarBotones();  // Deshabilitar botones cuando sea el turno de la computadora
         } else{
             jugadorActual = new Humano();
+            habilitarBotones();  // Habilitar botones cuando sea el turno del humano
         }
+
         if(Objects.equals(jugadorActual.getTurno(), "X")){
             cputext.animate().alpha(0.2f).setDuration(500).start();
             cpuimg.animate().alpha(0.2f).setDuration(500).start();
             playertext.animate().alpha(1f).setDuration(200).start();
             playerimg.animate().alpha(1f).setDuration(200).start();
-
         }
     }
+
 
     private boolean verificarVictoria(char jugador) {
         // Comprobar filas
@@ -276,20 +314,23 @@ public class TicTacToe extends AppCompatActivity {
         // Usar Handler para retrasar la llamada a startActivity
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             // Animar al ganador o los elementos de la interfaz
-            if (ganador.contains("Humano")) {
+            if (ganador.equals("Humano")) {
                 playertext.animate().alpha(1f).setDuration(500).start();
                 playerimg.animate().alpha(1f).setDuration(500).start();
-            } else if (ganador.contains("Computadora")) {
+            } else if (ganador.equals("Computadora")) {
                 cputext.animate().alpha(1f).setDuration(500).start();
                 cpuimg.animate().alpha(1f).setDuration(500).start();
             }
 
-            // Llamar a la siguiente actividad
+            // Llamar a la siguiente actividad y pasar el ganador
             Intent intent = new Intent(this, GanadorActivity.class);
-            intent.putExtra("GANADOR", ganador);
+            intent.putExtra("GANADOR", ganador);  // "Humano", "Computadora" o "Empate"
             startActivity(intent);
+            finish();  // Para evitar que el usuario regrese a la actividad anterior
         }, 300); // Retraso de 300ms (ajustar si es necesario)
     }
+
+
 
 
 

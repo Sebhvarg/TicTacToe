@@ -19,13 +19,25 @@ public class GanadorActivity extends AppCompatActivity {
 
         // Obtén el nombre del ganador desde el intent
         String ganador = getIntent().getStringExtra("GANADOR");
-        textoGanador.setText("¡" + ganador + " ganó!");
 
+        // Ajustar el mensaje basado en el ganador
+        if (ganador != null) {
+            if (ganador.equals("Humano")) {
+                textoGanador.setText("¡Jugador Humano ha ganado!");
+            } else if (ganador.equals("Computadora")) {
+                textoGanador.setText("¡Computadora ha ganado!");
+            } else if (ganador.equals("Empate")) {
+                textoGanador.setText("¡Es un empate!");
+            }
+        }
+
+        // Acción de reiniciar el juego o regresar al menú principal
         botonReiniciar.setOnClickListener(v -> {
-            // Reinicia el juego o regresa al menú principal
+            // Reiniciar el juego o regresar al menú principal
             Intent intent = new Intent(GanadorActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
         });
     }
 }
+
