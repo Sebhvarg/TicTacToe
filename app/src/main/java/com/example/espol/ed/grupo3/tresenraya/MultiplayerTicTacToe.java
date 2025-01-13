@@ -1,13 +1,18 @@
 package com.example.espol.ed.grupo3.tresenraya;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+import com.example.espol.ed.grupo3.tresenraya.ReproductorControlador;
 
 public class MultiplayerTicTacToe extends AppCompatActivity {
     private char[][] tablero = new char[3][3];
@@ -111,6 +116,10 @@ public class MultiplayerTicTacToe extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_multiplayer_tic_tac_toe);
 
+        // Inicializar la música
+        ReproductorControlador.getInstance().init(this, R.raw.music);
+        ReproductorControlador.getInstance().play();
+
         player1Text = findViewById(R.id.player1Text);
         player2Text = findViewById(R.id.player2Text);
         GridLayout gridLayout = findViewById(R.id.gridLayout);
@@ -127,6 +136,22 @@ public class MultiplayerTicTacToe extends AppCompatActivity {
             }
         }
         cambiarTurno();
+
+        ImageButton btnexit = findViewById(R.id.btnexit);
+        btnexit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deshabilitarBotones();
+                Intent intent = new Intent(MultiplayerTicTacToe.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ReproductorControlador.getInstance().stop();
     }
 
     private void inicializarTablero() {
@@ -137,5 +162,6 @@ public class MultiplayerTicTacToe extends AppCompatActivity {
         }
     }
 }
+
 
 
