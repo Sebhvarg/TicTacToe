@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -8,7 +7,6 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <!-- Título del juego -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -19,7 +17,6 @@
         android:layout_gravity="center"
         android:layout_marginBottom="16dp"/>
 
-    <!-- Botón para salir del juego -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -28,7 +25,7 @@
 
         <TextView
             android:id="@+id/textView4"
-            android:layout_width="wrap_content"
+            android:layout_width="160dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:fontFamily="@font/roboto_medium"
@@ -47,7 +44,6 @@
 
     </LinearLayout>
 
-    <!-- Indicación de turno del jugador actual -->
     <LinearLayout
         android:id="@+id/playerbar"
         android:layout_width="match_parent"
@@ -56,29 +52,50 @@
         android:orientation="horizontal"
         android:visibility="visible">
 
+        <!-- Icono y texto del Jugador 1 -->
         <ImageView
-            android:id="@+id/playerimg"
+            android:id="@+id/player1"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_weight="2"
+            android:layout_marginEnd="8dp"
             android:scaleType="centerInside"
             app:srcCompat="@drawable/player1" />
 
         <TextView
-            android:id="@+id/playertext"
-            android:layout_width="wrap_content"
+            android:id="@+id/player1text"
+            android:layout_width="106dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_marginEnd="16dp"
             android:fontFamily="@font/roboto_medium"
-            android:text="JUGADOR"
+            android:text="Jugador 1 (X)"
             android:textAlignment="viewStart"
-            android:textColor="#418EBE"
+            android:textColor="#418FBF"
             android:textSize="24sp"
             android:textStyle="bold" />
 
+        <!-- Icono y texto del Jugador 2 -->
+
+        <ImageView
+            android:id="@+id/player2"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="16dp"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/player2" />
+
+        <TextView
+            android:id="@+id/player2text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_medium"
+            android:text="Jugador 2 (O)"
+            android:textAlignment="viewStart"
+            android:textColor="#FFD700"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginStart="8dp" />
     </LinearLayout>
 
-    <!-- Añadir el TextView para player1Text y player2Text -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -86,26 +103,24 @@
         android:gravity="center">
 
         <TextView
-            android:id="@+id/player1Text"
+            android:id="@+id/player2Text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Jugador 1 (O)"
             android:textSize="24sp"
             android:textColor="#418FBF"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/player2Text"
+            android:id="@+id/player1Text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Jugador 2 (X)"
+
             android:textSize="24sp"
-            android:textColor="#BE0413"
+            android:textColor="#FFD700"
             android:textStyle="bold"
             android:layout_marginStart="32dp" />
     </LinearLayout>
 
-    <!-- Tablero de juego (3x3 GridLayout) -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="650dp"
@@ -257,7 +272,6 @@
                 app:cornerRadius="10dp"
                 app:strokeColor="#000000"
                 app:strokeWidth="3dp" />
-
         </GridLayout>
     </LinearLayout>
 </LinearLayout>

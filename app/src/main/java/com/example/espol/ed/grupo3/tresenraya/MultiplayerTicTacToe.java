@@ -92,6 +92,13 @@ public class MultiplayerTicTacToe extends AppCompatActivity {
     }
 
     private void mostrarGanador(String ganador) {
+        // Ajustar el mensaje del ganador según el cambio visual
+        if (ganador.contains("2")) {
+            ganador = ganador.replace("2", "1");
+        } else if (ganador.contains("1")) {
+            ganador = ganador.replace("1", "2");
+        }
+
         // Mostrar el ganador
         Intent intent = new Intent(this, GanadorActivity.class);
         intent.putExtra("GANADOR", ganador);
