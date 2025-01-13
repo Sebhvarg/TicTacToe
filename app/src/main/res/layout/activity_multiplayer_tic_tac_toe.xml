@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bgvs"
+    android:gravity="center|top"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Título del juego -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tic-Tac-Toe"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_gravity="center"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Botón para salir del juego -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/roboto_medium"
+            android:text="Abandonar juego"
+            android:textAlignment="textEnd"
+            android:textColor="@color/black" />
+
+        <ImageButton
+            android:id="@+id/btnexit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="#00FFFFFF"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/exit" />
+
+    </LinearLayout>
+
+    <!-- Indicación de turno del jugador actual -->
+    <LinearLayout
+        android:id="@+id/playerbar"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+        <ImageView
+            android:id="@+id/playerimg"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_weight="2"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/player1" />
+
+        <TextView
+            android:id="@+id/playertext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/roboto_medium"
+            android:text="JUGADOR"
+            android:textAlignment="viewStart"
+            android:textColor="#418EBE"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <!-- Añadir el TextView para player1Text y player2Text -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/player1Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Jugador 1 (O)"
+            android:textSize="24sp"
+            android:textColor="#418FBF"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/player2Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Jugador 2 (X)"
+            android:textSize="24sp"
+            android:textColor="#BE0413"
+            android:textStyle="bold"
+            android:layout_marginStart="32dp" />
+    </LinearLayout>
+
+    <!-- Tablero de juego (3x3 GridLayout) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="650dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <GridLayout
+            android:id="@+id/gridLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="16dp"
+            android:columnCount="3"
+            android:orientation="horizontal"
+            android:rowCount="3">
+
+            <!-- Botones para cada celda del tablero -->
+            <Button
+                android:id="@+id/button_00"
+                style="xml/style.xml"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:layout_margin="5dp"
+                android:backgroundTint="#F0F0EF"
+                android:fontFamily="@font/designer"
+                android:textAlignment="center"
+                android:textColor="#BF0413"
+                android:textSize="45sp"
+                app:cornerRadius="10dp"
+                app:strokeColor="#000000"
+                app:strokeWidth="3dp" />
+
+            <Button
+                android:id="@+id/button_01"
+                style="xml/style.xml"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:layout_margin="5dp"
+                android:backgroundTint="#F0F0EF"
+                android:fontFamily="@font/designer"
+                android:textAlignment="center"
+                android:textColor="#BF0413"
+                android:textSize="45sp"
+                app:cornerRadius="10dp"
+                app:strokeColor="#000000"
+                app:strokeWidth="3dp" />
+
+            <Button
+                android:id="@+id/button_02"
+                style="xml/style.xml"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:layout_margin="5dp"
+                android:backgroundTint="#F0F0EF"
+                android:fontFamily="@font/designer"
+                android:textAlignment="center"
+                android:textColor="#BF0413"
+                android:textSize="45sp"
+                app:cornerRadius="10dp"
+                app:strokeColor="#000000"
+                app:strokeWidth="3dp" />
+
+            <Button
+                android:id="@+id/button_10"
+                style="xml/style.xml"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:layout_margin="5dp"
+                android:backgroundTint="#F0F0EF"
+                android:fontFamily="@font/designer"
+                android:textAlignment="center"
+                android:textColor="#BF0413"
+                android:textSize="45sp"
+                app:cornerRadius="10dp"
+                app:strokeColor="#000000"
+                app:strokeWidth="3dp" />
+
+            <Button
+                android:id="@+id/button_11"
+                style="xml/style.xml"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:layout_margin="5dp"
+                android:backgroundTint="#F0F0EF"
+                android:fontFamily="@font/designer"
+                android:textAlignment="center"
+                android:textColor="#BF0413"
+                android:textSize="45sp"
+                app:cornerRadius="10dp"
+                app:strokeColor="#000000"
+                app:strokeWidth="3dp" />
+
+            <Button
+                android:id="@+id/button_12"
+                style="xml/style.xml"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:layout_margin="5dp"
+                android:backgroundTint="#F0F0EF"
+                android:fontFamily="@font/designer"
+                android:textAlignment="center"
+                android:textColor="#BF0413"
+                android:textSize="45sp"
+                app:cornerRadius="10dp"
+                app:strokeColor="#000000"
+                app:strokeWidth="3dp" />
+
+            <Button
+                android:id="@+id/button_20"
+                style="xml/style.xml"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:layout_margin="5dp"
+                android:backgroundTint="#F0F0EF"
+                android:fontFamily="@font/designer"
+                android:textAlignment="center"
+                android:textColor="#BF0413"
+                android:textSize="45sp"
+                app:cornerRadius="10dp"
+                app:strokeColor="#000000"
+                app:strokeWidth="3dp" />
+
+            <Button
+                android:id="@+id/button_21"
+                style="xml/style.xml"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:layout_margin="5dp"
+                android:backgroundTint="#F0F0EF"
+                android:fontFamily="@font/designer"
+                android:textAlignment="center"
+                android:textColor="#BF0413"
+                android:textSize="45sp"
+                app:cornerRadius="10dp"
+                app:strokeColor="#000000"
+                app:strokeWidth="3dp" />
+
+            <Button
+                android:id="@+id/button_22"
+                style="xml/style.xml"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:layout_margin="5dp"
+                android:backgroundTint="#F0F0EF"
+                android:fontFamily="@font/designer"
+                android:textAlignment="center"
+                android:textColor="#BF0413"
+                android:textSize="45sp"
+                app:cornerRadius="10dp"
+                app:strokeColor="#000000"
+                app:strokeWidth="3dp" />
+
+        </GridLayout>
+    </LinearLayout>
+</LinearLayout>
