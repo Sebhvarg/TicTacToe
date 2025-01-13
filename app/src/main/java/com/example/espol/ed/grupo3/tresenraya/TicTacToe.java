@@ -87,7 +87,7 @@ public class TicTacToe extends AppCompatActivity {
             new Handler(Looper.getMainLooper()).postDelayed(() -> {
                 botones[mejorMovimiento[0]][mejorMovimiento[1]].setText("X");
             }, 1000);
-                tablero[mejorMovimiento[0]][mejorMovimiento[1]] = 'X';
+            tablero[mejorMovimiento[0]][mejorMovimiento[1]] = 'X';
 
             new Handler(Looper.getMainLooper()).postDelayed(() -> {
                 cputext.animate().alpha(0.3f).setDuration(500).start();
@@ -333,7 +333,5 @@ public class TicTacToe extends AppCompatActivity {
     }
 
 }
-
-
 
 
