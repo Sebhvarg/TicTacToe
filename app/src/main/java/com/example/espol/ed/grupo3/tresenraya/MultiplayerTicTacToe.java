@@ -54,7 +54,6 @@ public class MultiplayerTicTacToe extends AppCompatActivity {
         });
     }
 
-
     private void cambiarTurno() {
         if (turnoActual == PLAYER_X) {
             turnoActual = PLAYER_O;
@@ -170,22 +169,40 @@ public class MultiplayerTicTacToe extends AppCompatActivity {
         simularArbol(tablero, turnoActual, raiz);
         dibujarArbol(raiz, 0);
     }
-// toy copiando el min max pero a mi mod prueba para resolver el min max no tan bueno 
+
+    // toy copiando el min max pero a mi mod prueba para resolver el min max no tan
+    // bueno
     private void movimientoIA() {
-        
+
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (tablero[i][j] == '\0') {
-                    tablero[i][j] = PLAYER_O; 
+                    tablero[i][j] = PLAYER_O;
                     botones[i][j].setText("O");
                     botones[i][j].setTextColor(Color.parseColor("#418FBF"));
-                    return; 
+                    return;
                 }
             }
         }
     }
-    
+    // presentación de estadisticas
+    private static int victoriasJugador1 = 0;
+    private static int victoriasJugador2 = 0;
+    private static int empates = 0;
 
+    private void registrarEstadisticas(String ganador) {
+        if (ganador.equals("Jugador 1")) {
+            victoriasJugador1++;
+        } else if (ganador.equals("Jugador 2")) {
+            victoriasJugador2++;
+        } else if (ganador.equals("Empate")) {
+            empates++;
+        }
+        Log.d("Estadísticas", "Jugador 1: " + victoriasJugador1 +
+                ", Jugador 2: " + victoriasJugador2 +
+                ", Empates: " + empates);
+    }
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -234,4 +251,3 @@ public class MultiplayerTicTacToe extends AppCompatActivity {
         }
     }
 }
-
