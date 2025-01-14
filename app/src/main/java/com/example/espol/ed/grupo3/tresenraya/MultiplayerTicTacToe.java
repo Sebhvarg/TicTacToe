@@ -129,6 +129,48 @@ public class MultiplayerTicTacToe extends AppCompatActivity {
         }, 300);
     }
 
+    private void simularArbol(char[][] tableroActual, char jugador, NodoArbol nodo) {
+        // Recorrer todas las casillas
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (tableroActual[i][j] == '\0') { // Si la casilla está vacía
+                    char[][] nuevoEstado = NodoArbol.copiarTablero(tableroActual);
+                    nuevoEstado[i][j] = jugador; // Marcar movimiento
+                    NodoArbol nuevoNodo = new NodoArbol(nuevoEstado);
+                    nodo.hijos.add(nuevoNodo);
+
+                    // Cambiar turno para simular siguiente movimiento
+                    char siguienteJugador = (jugador == PLAYER_X) ? PLAYER_O : PLAYER_X;
+                    simularArbol(nuevoEstado, siguienteJugador, nuevoNodo);
+                }
+            }
+        }
+    }
+
+    private void dibujarArbol(NodoArbol nodo, int nivel) {
+        // Imprimir el nodo actual
+        StringBuilder logNodo = new StringBuilder();
+        for (char[] fila : nodo.estado) {
+            logNodo.append("| ");
+            for (char celda : fila) {
+                logNodo.append(celda == '\0' ? " " : celda).append(" | ");
+            }
+            logNodo.append("\n");
+        }
+        Log.d("TicTacToeTree", "Nivel " + nivel + ":\n" + logNodo);
+
+        // Dibujar hijos recursivamente
+        for (NodoArbol hijo : nodo.hijos) {
+            dibujarArbol(hijo, nivel + 1);
+        }
+    }
+
+    private void generarYMostrarArbol() {
+        NodoArbol raiz = new NodoArbol(tablero);
+        simularArbol(tablero, turnoActual, raiz);
+        dibujarArbol(raiz, 0);
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
