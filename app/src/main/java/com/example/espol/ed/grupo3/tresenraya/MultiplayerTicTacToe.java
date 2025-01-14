@@ -1,11 +1,11 @@
 package com.example.espol.ed.grupo3.tresenraya;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
@@ -15,22 +15,28 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.espol.ed.grupo3.tresenraya.ReproductorControlador;
 
 public class MultiplayerTicTacToe extends AppCompatActivity {
+
+    private static final char PLAYER_X = 'X';
+    private static final char PLAYER_O = 'O';
+
     private char[][] tablero = new char[3][3];
     private Button[][] botones;
-    private char turnoActual = 'O';
+    private char turnoActual = PLAYER_X; // Iniciar con el Jugador 1 (X)
     private TextView player1Text, player2Text;
 
     private void configurarBotones(Button boton, int fila, int columna) {
         boton.setOnClickListener(v -> {
             if (boton.getText().toString().isEmpty()) {
                 // Realizar el movimiento
-                boton.setText(turnoActual == 'O' ? "O" : "X");
-                boton.setTextColor(turnoActual == 'O' ? Color.parseColor("#418FBF") : Color.parseColor("#BE0413"));
+                boton.setText(turnoActual == PLAYER_O ? "O" : "X");
+                boton.setTextColor(turnoActual == PLAYER_O ? Color.parseColor("#418FBF") : Color.parseColor("#BE0413"));
                 tablero[fila][columna] = turnoActual;
 
                 // Verificar si hay un ganador
                 if (verificarVictoria(turnoActual)) {
-                    mostrarGanador("¡Jugador " + (turnoActual == 'O' ? "1" : "2") + " Ganador!");
+                    String mensajeGanador = "¡Jugador " + (turnoActual == PLAYER_X ? "1" : "2") + " Ganador!";
+                    Log.d("MultiplayerTicTacToe", "Ganador: " + mensajeGanador); // Logging the winner
+                    mostrarGanador(mensajeGanador);
                     deshabilitarBotones();
                 } else if (esEmpate()) {
                     mostrarGanador("¡Empate!");
@@ -44,9 +50,9 @@ public class MultiplayerTicTacToe extends AppCompatActivity {
     }
 
     private void cambiarTurno() {
-        turnoActual = (turnoActual == 'O') ? 'X' : 'O';
-        player1Text.setAlpha(turnoActual == 'O' ? 1.0f : 0.3f);
-        player2Text.setAlpha(turnoActual == 'X' ? 1.0f : 0.3f);
+        turnoActual = (turnoActual == PLAYER_X) ? PLAYER_O : PLAYER_X;
+        player1Text.setAlpha(turnoActual == PLAYER_X ? 1.0f : 0.3f);
+        player2Text.setAlpha(turnoActual == PLAYER_O ? 1.0f : 0.3f);
     }
 
     private boolean verificarVictoria(char jugador) {
@@ -97,18 +103,13 @@ public class MultiplayerTicTacToe extends AppCompatActivity {
     }
 
     private void mostrarGanador(String ganador) {
-        // Ajustar el mensaje del ganador según el cambio visual
-        if (ganador.contains("2")) {
-            ganador = ganador.replace("2", "1");
-        } else if (ganador.contains("1")) {
-            ganador = ganador.replace("1", "2");
-        }
-
-        // Mostrar el ganador
-        Intent intent = new Intent(this, GanadorActivity.class);
-        intent.putExtra("GANADOR", ganador);
-        startActivity(intent);
-        finish();
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            Intent intent = new Intent(this, GanadorActivity.class);
+            intent.putExtra("GANADOR", ganador);
+            startActivity(intent);
+            finish();
+        }, 300); // Retraso de 300ms (ajustar si es necesario)
     }
 
     @Override
@@ -138,13 +139,10 @@ public class MultiplayerTicTacToe extends AppCompatActivity {
         cambiarTurno();
 
         ImageButton btnexit = findViewById(R.id.btnexit);
-        btnexit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                deshabilitarBotones();
-                Intent intent = new Intent(MultiplayerTicTacToe.this, MainActivity.class);
-                startActivity(intent);
-            }
+        btnexit.setOnClickListener(v -> {
+            deshabilitarBotones();
+            Intent intent = new Intent(MultiplayerTicTacToe.this, MainActivity.class);
+            startActivity(intent);
         });
     }
 
@@ -162,6 +160,3 @@ public class MultiplayerTicTacToe extends AppCompatActivity {
         }
     }
 }
-
-
-

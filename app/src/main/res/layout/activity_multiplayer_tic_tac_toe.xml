@@ -25,7 +25,7 @@
 
         <TextView
             android:id="@+id/textView4"
-            android:layout_width="160dp"
+            android:layout_width="651dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:fontFamily="@font/roboto_medium"
@@ -67,7 +67,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:fontFamily="@font/roboto_medium"
-            android:text="Jugador 1 (X)"
+            android:text="Jugador 1 (O)"
             android:textAlignment="viewStart"
             android:textColor="#418FBF"
             android:textSize="24sp"
@@ -88,9 +88,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_medium"
-            android:text="Jugador 2 (O)"
+            android:text="Jugador 2 (X)"
             android:textAlignment="viewStart"
-            android:textColor="#FFD700"
+            android:textColor="#F3B503"
             android:textSize="24sp"
             android:textStyle="bold"
             android:layout_marginStart="8dp" />
@@ -103,25 +103,23 @@
         android:gravity="center">
 
         <TextView
+            android:id="@+id/player1Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:textColor="#BE0413"
+            android:textStyle="bold" />
+
+        <TextView
             android:id="@+id/player2Text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="24sp"
             android:textColor="#418FBF"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/player1Text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:textSize="24sp"
-            android:textColor="#FFD700"
             android:textStyle="bold"
             android:layout_marginStart="32dp" />
     </LinearLayout>
-
-    <LinearLayout
+<LinearLayout
         android:layout_width="match_parent"
         android:layout_height="650dp"
         android:gravity="center"
