@@ -16,11 +16,7 @@ public class GanadorActivity extends AppCompatActivity {
 
         TextView textoGanador = findViewById(R.id.textoGanador);
         Button botonReiniciar = findViewById(R.id.botonReiniciar);
-
-        // Obtén el nombre del ganador desde el intent
         String ganador = getIntent().getStringExtra("GANADOR");
-
-        // Ajustar el mensaje basado en el ganador
         if (ganador != null) {
             if (ganador.equals("Humano")) {
                 textoGanador.setText("¡Jugador Humano ha ganado!");
@@ -28,10 +24,15 @@ public class GanadorActivity extends AppCompatActivity {
                 textoGanador.setText("¡Computadora ha ganado!");
             } else if (ganador.equals("Empate")) {
                 textoGanador.setText("¡Es un empate!");
+            } else if (ganador.equals("Jugador 1")) {
+                textoGanador.setText("¡Jugador 1 ha ganado!");
+            } else if (ganador.equals("Jugador 2")) {
+                textoGanador.setText("¡Jugador 2 ha ganado!");
+            } else {
+                textoGanador.setText("¡Resultado desconocido!");
             }
         }
 
-        // Acción de reiniciar el juego o regresar al menú principal
         botonReiniciar.setOnClickListener(v -> {
             // Reiniciar el juego o regresar al menú principal
             Intent intent = new Intent(GanadorActivity.this, MainActivity.class);
@@ -40,4 +41,3 @@ public class GanadorActivity extends AppCompatActivity {
         });
     }
 }
-
