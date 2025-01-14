@@ -170,6 +170,21 @@ public class MultiplayerTicTacToe extends AppCompatActivity {
         simularArbol(tablero, turnoActual, raiz);
         dibujarArbol(raiz, 0);
     }
+// toy copiando el min max pero a mi mod prueba para resolver el min max no tan bueno 
+    private void movimientoIA() {
+        
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (tablero[i][j] == '\0') {
+                    tablero[i][j] = PLAYER_O; 
+                    botones[i][j].setText("O");
+                    botones[i][j].setTextColor(Color.parseColor("#418FBF"));
+                    return; 
+                }
+            }
+        }
+    }
+    
 
 
     @Override
