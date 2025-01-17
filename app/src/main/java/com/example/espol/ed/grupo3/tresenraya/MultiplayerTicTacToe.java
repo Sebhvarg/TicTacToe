@@ -58,12 +58,12 @@ public class MultiplayerTicTacToe extends AppCompatActivity {
     private void cambiarTurno() {
         if (turnoActual == PLAYER_X) {
             turnoActual = PLAYER_O;
-            player1Text.setAlpha(0.3f);
-            player2Text.setAlpha(1.0f);
+            player2Text.setAlpha(0.3f);
+            player1Text.setAlpha(1.0f);
         } else {
             turnoActual = PLAYER_X;
-            player1Text.setAlpha(1.0f);
-            player2Text.setAlpha(0.3f);
+            player2Text.setAlpha(1.0f);
+            player1Text.setAlpha(0.3f);
         }
     }
 
