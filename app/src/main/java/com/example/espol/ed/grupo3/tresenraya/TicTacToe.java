@@ -23,6 +23,7 @@ import java.util.Objects;
 
 
 public class TicTacToe extends AppCompatActivity {
+    private HistorialManager historialManager;
     private Jugador jugadorActual;
     private Button[][] botones;
     private char[][] tablero = new char[3][3];
@@ -41,13 +42,16 @@ public class TicTacToe extends AppCompatActivity {
         boton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (boton.getText().toString().isEmpty() && jugadorActual instanceof Humano) { // Asegurarse de que sea el turno del humano
+                if (boton.getText().toString().isEmpty() && jugadorActual instanceof Humano) {
                     // Realizar el movimiento
                     boton.setTextColor(Color.parseColor("#418FBF"));
                     boton.setText(jugadorActual.getTurno());
 
                     // Actualizar el tablero
                     tablero[fila][columna] = jugadorActual.getTurno().charAt(0);
+
+                    // Registrar la jugada del humano en el historial
+                    historialManager.registrarJugada("Humano", fila, columna);
 
                     // Deshabilitar botones inmediatamente después de realizar un movimiento
                     deshabilitarBotones();
@@ -98,6 +102,9 @@ public class TicTacToe extends AppCompatActivity {
             new Handler(Looper.getMainLooper()).postDelayed(() -> {
                 botones[mejorMovimiento[0]][mejorMovimiento[1]].setText("X");
                 tablero[mejorMovimiento[0]][mejorMovimiento[1]] = 'X';
+
+                // Registrar la jugada de la computadora en el historial
+                historialManager.registrarJugada("Computadora", mejorMovimiento[0], mejorMovimiento[1]);
 
                 // Cambiar la visibilidad de los elementos después de un pequeño retraso
                 new Handler(Looper.getMainLooper()).postDelayed(() -> {
@@ -205,7 +212,6 @@ public class TicTacToe extends AppCompatActivity {
 
         int[] mejorMovimiento = {-1, -1};
 
-
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (tablero[i][j] == '\0') {
@@ -308,6 +314,8 @@ public class TicTacToe extends AppCompatActivity {
 
 
     private void mostrarGanador(String ganador) {
+        historialManager.setGanador(ganador);
+        historialManager.guardarHistorial();
         // Aplicar la animación de transición
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 
@@ -338,6 +346,9 @@ public class TicTacToe extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tic_tac_toe);
+
+        historialManager = HistorialManager.getInstance(this);
+        historialManager.iniciarNuevaPartida("Un Jugador");
 
         jugadorActual = new Humano();
         cputext = findViewById(R.id.cputext);
