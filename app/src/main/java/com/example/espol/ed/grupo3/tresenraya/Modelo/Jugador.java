@@ -1,13 +1,14 @@
 package com.example.espol.ed.grupo3.tresenraya.Modelo;
 
-public abstract class Jugador {
-    protected String turno;
-
-    public String getTurno(){
-        return turno;
+public class Jugador {
+    protected char ficha;
+    public Jugador(char ficha){
+        this.ficha = ficha;
     }
-
-    public void setTurno(String turno) {
-        this.turno = turno;
+    public char getFicha(){
+        return ficha;
+    }
+    public void setTurno(char ficha) {
+        this.ficha = ficha;
     }
 }

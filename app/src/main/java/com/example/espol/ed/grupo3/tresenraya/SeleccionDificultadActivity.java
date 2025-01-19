@@ -7,46 +7,44 @@ import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
-    public class SeleccionDificultadActivity extends AppCompatActivity {
+
+public class SeleccionDificultadActivity extends AppCompatActivity {
 
     private Button btnMedio, btnExperto;
 
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_seleccion_dificultad);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_seleccion_dificultad);
 
-            // Inicializar los botones
-            btnMedio = findViewById(R.id.btnMedio);
-            btnExperto = findViewById(R.id.btnExperto);
+        // Inicializar los botones
+        btnMedio = findViewById(R.id.btnMedio);
+        btnExperto = findViewById(R.id.btnExperto);
 
-            // Configurar eventos de clic para los botones
-            btnMedio.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Devolver el nivel "Medio" a la actividad principal
-                    Intent resultIntent = new Intent();
-                    resultIntent.putExtra("nivel", "Medio");
-                    setResult(RESULT_OK, resultIntent);
-                    finish();  // Cierra esta actividad y regresa a TicTacToe
-                }
-            });
+        // Configurar eventos de clic para los botones
+        btnMedio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Devolver el nivel "Medio" a la actividad principal
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra("nivel", "Medio");
+                setResult(RESULT_OK, resultIntent);
+                finish();  // Cierra esta actividad y regresa a TicTacToe
+            }
+        });
 
-            btnExperto.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Devolver el nivel "Experto" a la actividad principal
-                    Intent resultIntent = new Intent();
-                    resultIntent.putExtra("nivel", "Experto");
-                    setResult(RESULT_OK, resultIntent);
-                    finish();  // Cierra esta actividad y regresa a TicTacToe
-                }
-            });
-        }
+        btnExperto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Devolver el nivel "Experto" a la actividad principal
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra("nivel", "Experto");
+                setResult(RESULT_OK, resultIntent);
+                finish();  // Cierra esta actividad y regresa a TicTacToe
+            }
+        });
+    }
 
 
 }

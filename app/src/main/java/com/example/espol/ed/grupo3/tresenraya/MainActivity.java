@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 ReproductorControlador.getInstance().init(MainActivity.this, R.raw.music);
-                Intent intent = new Intent(MainActivity.this, TicTacToe.class);
+                Intent intent = new Intent(MainActivity.this, TicTacToeActivity.class);
                 startActivity(intent);
             }
         });

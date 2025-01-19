@@ -29,7 +29,7 @@
             android:resource="@array/preloaded_fonts" />
 
         <activity
-            android:name=".TicTacToe"
+            android:name=".TicTacToeActivity"
             android:exported="true"
             android:label="@string/title_activity_tic_tac_toe"
             android:theme="@style/Theme.TresEnRaya" />
