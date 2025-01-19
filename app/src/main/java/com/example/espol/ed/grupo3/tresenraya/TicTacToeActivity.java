@@ -5,8 +5,10 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.espol.ed.grupo3.tresenraya.Modelo.Juego;
 
 public class TicTacToeActivity extends AppCompatActivity {
@@ -15,6 +17,57 @@ public class TicTacToeActivity extends AppCompatActivity {
     private TextView playertext, cputext;
     private ImageView playerimg, cpuimg;
     private Juego juego;
+
+    // Declaración del launcher para recibir el resultado de la actividad de selección de dificultad
+    private final ActivityResultLauncher<Intent> seleccionarDificultadLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == RESULT_OK) {
+                    Intent data = result.getData();
+                    if (data != null) {
+                        // Obtener el nivel de dificultad seleccionado
+                        String nivel = data.getStringExtra("nivel");
+
+                        // Inicializar el juego con el nivel seleccionado
+                        boolean esExperto = "Experto".equals(nivel);
+                        juego = new Juego(this, esExperto, playertext, cputext, playerimg, cpuimg);
+                        juego.configurarBotones(botones);
+
+                        // Habilitar los botones para que el jugador pueda hacer su movimiento
+                        juego.habilitarBotones();
+
+                        // Agregar un listener para manejar el turno del jugador en los botones
+                        for (int i = 0; i < 3; i++) {
+                            for (int j = 0; j < 3; j++) {
+                                Button boton = botones[i][j];
+                                int fila = i;
+                                int columna = j;
+
+                                // Configurar el evento de clic en cada botón
+                                boton.setOnClickListener(v -> {
+                                    if (boton.getText().toString().isEmpty()) {
+                                        // Marcar la ficha del jugador
+                                        boton.setText("O"); // El jugador coloca su ficha como 'O'
+
+                                        // Actualizar el tablero con la ficha del jugador
+                                        juego.getTablero().getTablero()[fila][columna] = 'O';
+
+                                        // Verificar si ha ganado el jugador
+                                        if (juego.verificarVictoria()) {
+                                            juego.mostrarGanador("Jugador");
+                                        } else {
+                                            // Cambiar al turno de la computadora
+                                            juego.cambiarTurno();
+                                            juego.turnoComputadora();  // Cambio aquí: ahora usa turnoComputadora()
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    }
+                }
+            });
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,53 +94,7 @@ public class TicTacToeActivity extends AppCompatActivity {
 
         // Iniciar la actividad de selección de dificultad
         Intent intent = new Intent(TicTacToeActivity.this, SeleccionDificultadActivity.class);
-        startActivityForResult(intent, 1);  // Recibimos el resultado con el requestCode 1
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == 1 && resultCode == RESULT_OK) {
-            // Obtener el nivel de dificultad seleccionado
-            String nivel = data.getStringExtra("nivel");
-
-            // Inicializar el juego con el nivel seleccionado
-            juego = new Juego(this, nivel.equals("Experto"), playertext, cputext, playerimg, cpuimg);
-            juego.configurarBotones(botones);
-
-            // Habilitar los botones para que el jugador pueda hacer su movimiento
-            juego.habilitarBotones();
-
-            // Cambio: Agregar un listener para manejar el turno del jugador en los botones
-            for (int i = 0; i < 3; i++) {
-                for (int j = 0; j < 3; j++) {
-                    Button boton = botones[i][j];
-                    int fila = i;
-                    int columna = j;
-
-                    // Configurar el evento de clic en cada botón
-                    boton.setOnClickListener(v -> {
-                        if (boton.getText().toString().isEmpty()) {
-                            // Marcar la ficha del jugador
-                            boton.setText("X"); // Cambio: El jugador coloca su ficha como 'X'
-                            // Hacer el movimiento en el objeto juego
-                            juego.jugarTurno(fila, columna);
-                            // Verificar si ha ganado el jugador
-                            if (juego.verificarVictoria()) {
-                                juego.mostrarGanador("Jugador");
-                            } else {
-                                // Cambiar al turno de la computadora
-                                juego.cambiarTurno();
-                                juego.iniciarTurnoComputadora();
-                            }
-                        }
-                    });
-                }
-            }
-        }
+        seleccionarDificultadLauncher.launch(intent);  // Usar el launcher para obtener el resultado
     }
 }
-
-
 

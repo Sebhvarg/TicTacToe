@@ -27,12 +27,16 @@ public class Juego {
     private TextView playertext, cputext;
     private ImageView playerimg, cpuimg;
 
+
+    public Tablero getTablero(){
+        return tablero;
+    }
     public Juego(Context context, boolean experto,TextView playertext, TextView cputext, ImageView playerimg, ImageView cpuimg ) {
         this.context = context;
         tablero = new Tablero();
         jugadorX = new Jugador('X');
         jugadorO = new Jugador('O');
-        jugadorActual = jugadorX; // Empieza el jugador X
+        jugadorActual = jugadorO; // Empieza el jugador o
         esNivelExperto = experto;
         medio = new IA_Medio(tablero);
         this.experto = new IA_Experto(tablero);
@@ -50,12 +54,50 @@ public class Juego {
         return jugadorO;
     }
 
-    public boolean jugarTurno(int fila, int columna) {
-        if (tablero.getTablero()[fila][columna] == '\0') {
-            tablero.colocarFicha(fila, columna, jugadorActual.getFicha());
-            return true;
+
+    public void turnoComputadora() {
+        if (tablero.verificarVictoria('O') || tablero.verificarVictoria('O') || esEmpate()) {
+            return;  // No hacer nada si ya hay un ganador o empate
         }
-        return false;
+
+        // Deshabilitar botones mientras la computadora hace su movimiento
+        deshabilitarBotones();
+
+        int[] mejorMovimiento = (esNivelExperto) ? experto.calcularMovimiento() : medio.calcularMovimiento();
+
+
+        if (mejorMovimiento[0] != -1 && mejorMovimiento[1] != -1) {
+            playertext.animate().alpha(0.2f).setDuration(500).start();
+            playerimg.animate().alpha(0.2f).setDuration(500).start();
+            cputext.animate().alpha(1f).setDuration(200).start();
+            cpuimg.animate().alpha(1f).setDuration(200).start();
+
+            // Hacer el movimiento de la computadora
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                botones[mejorMovimiento[0]][mejorMovimiento[1]].setText("X");
+                tablero.getTablero()[mejorMovimiento[0]][mejorMovimiento[1]] = 'X';
+
+                // Cambiar la visibilidad de los elementos después de un pequeño retraso
+                new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                    cputext.animate().alpha(0.3f).setDuration(500).start();
+                    cpuimg.animate().alpha(0.3f).setDuration(500).start();
+                    playertext.animate().alpha(1f).setDuration(200).start();
+                    playerimg.animate().alpha(1f).setDuration(200).start();
+                }, 800);
+
+                // Verificar si hay un ganador o empate después del movimiento de la computadora
+                if (tablero.verificarVictoria('X')) {
+                    mostrarGanador("Computadora");
+                    deshabilitarBotones();
+                } else if (esEmpate()) {
+                    mostrarGanador("Empate");
+                    deshabilitarBotones();
+                } else {
+                    cambiarTurno();
+                    habilitarBotonesConRetraso();  // Habilitar botones después del turno de la computadora
+                }
+            }, 1000);
+        }
     }
 
     public boolean verificarVictoria() {
@@ -67,38 +109,21 @@ public class Juego {
     }
 
     public void cambiarTurno() {
-        jugadorActual = (jugadorActual == jugadorX) ? jugadorO : jugadorX;
-    }
-
-    public void iniciarTurnoComputadora() {
-        if (verificarVictoria() || esEmpate()) {
-            return;
-        }
-
-        deshabilitarBotones();
-
-        // Cambio: Se ha agregado un chequeo para determinar si la IA debe jugar en nivel experto o medio
-        int[] mejorMovimiento = (esNivelExperto) ? experto.calcularMovimiento() : medio.calcularMovimiento();
-
-        if (mejorMovimiento[0] != -1 && mejorMovimiento[1] != -1) {
-            ejecutarMovimientoComputadora(mejorMovimiento);
-        }
-    }
-
-    private void ejecutarMovimientoComputadora(int[] movimiento) {
-        animarTurnoComputadora();
-
-        // Cambio: Animación al mostrar el turno de la computadora antes de realizar el movimiento
-        tablero.colocarFicha(movimiento[0], movimiento[1], 'O');
-        if (verificarVictoria()) {
-            mostrarGanador("Computadora");
-        } else if (esEmpate()) {
-            mostrarGanador("Empate");
+        // Compara la ficha del jugador actual para cambiar de turno
+        if (jugadorActual.getFicha() == 'X') {
+            jugadorActual = jugadorO;
         } else {
-            cambiarTurno();
-            habilitarBotonesConRetraso(); // Cambio: Retraso para habilitar los botones después del turno de la computadora
+            jugadorActual = jugadorX;
+        }
+
+        if(jugadorActual.getFicha() == 'X'){
+            cputext.animate().alpha(0.2f).setDuration(500).start();
+            cpuimg.animate().alpha(0.2f).setDuration(500).start();
+            playertext.animate().alpha(1f).setDuration(200).start();
+            playerimg.animate().alpha(1f).setDuration(200).start();
         }
     }
+
 
     public void mostrarGanador(String ganador) {
         if (context instanceof Activity) {
@@ -147,57 +172,60 @@ public class Juego {
         new Handler(Looper.getMainLooper()).postDelayed(() -> habilitarBotones(), 1000); // Cambio: Habilitar los botones con retraso para que el jugador vea el movimiento de la computadora
     }
 
-    private void animarTurnoComputadora() {
-        playertext.animate().alpha(0.2f).setDuration(500).start();
-        playerimg.animate().alpha(0.2f).setDuration(500).start();
-        cputext.animate().alpha(1f).setDuration(200).start();
-        cpuimg.animate().alpha(1f).setDuration(200).start(); // Cambio: Se añadió una animación para cambiar el estado visual durante el turno de la computadora
-    }
 
     public void configurarBotones(Button[][] botones) {
         this.botones = botones;
 
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                Button boton = botones[i][j];
-                int fila = i;
-                int columna = j;
-
-                // Cuando el humano hace un movimiento
-                boton.setOnClickListener(v -> {
-                    if (boton.getText().toString().isEmpty() && jugadorActual.getFicha() == 'O') {
-                        boton.setTextColor(Color.parseColor("#418FBF"));
-                        boton.setText(String.valueOf(jugadorActual.getFicha()));
-
-                        // Coloca la ficha en el tablero
-                        tablero.getTablero()[fila][columna] = jugadorActual.getFicha();
-
-                        // Deshabilitar botones después de colocar una ficha
-                        deshabilitarBotones();
-
-                        // Verificar si el jugador ganó
-                        if (tablero.verificarVictoria('O')) {
-                            mostrarGanador("Humano");
-                            deshabilitarBotones(); // Deshabilitar si el humano gana
-                        } else if (tablero.verificarVictoria('X')) {
-                            mostrarGanador("Computadora");
-                            deshabilitarBotones(); // Deshabilitar si la computadora gana
-                        } else if (esEmpate()) {
-                            mostrarGanador("Empate");
-                            deshabilitarBotones(); // Deshabilitar si hay empate
-                        } else {
-                            cambiarTurno(); // Cambiar turno después del movimiento del humano
-                            if (jugadorActual.getFicha() == 'X') { // Si es el turno de la computadora
-                                iniciarTurnoComputadora(); // La computadora juega
-                            } else {
-                                habilitarBotones(); // Habilitar botones si es el turno del humano
-                            }
-                        }
-                    }
-                });
-
+        // Configurar cada botón en la interfaz
+        for (int fila = 0; fila < 3; fila++) {
+            for (int columna = 0; columna < 3; columna++) {
+                Button boton = botones[fila][columna];
+                configurarBoton(boton, fila, columna);
             }
         }
+    }
+
+    // Método que configura un solo botón (como el que tienes en la clase Juego original)
+    private void configurarBoton(Button boton, int fila, int columna) {
+        boton.setTag(new int[]{fila, columna});
+
+        boton.setOnClickListener(v -> {
+            int[] coordinates = (int[]) boton.getTag();
+            int filaSeleccionada = coordinates[0];
+            int columnaSeleccionada = coordinates[1];
+
+            if (boton.getText().toString().isEmpty() && jugadorActual.getFicha() == 'O') {
+                // Realizar el movimiento
+                boton.setTextColor(Color.parseColor("#418FBF"));
+                boton.setText(jugadorActual.getFicha());
+
+                // Actualizar el tablero
+                tablero.getTablero()[filaSeleccionada][columnaSeleccionada] = jugadorActual.getFicha();
+
+                // Deshabilitar botones inmediatamente después de realizar un movimiento
+                deshabilitarBotones();
+
+                // Verificar si hay un ganador
+                if (tablero.verificarVictoria('O')) {
+                    mostrarGanador("Jugador");
+                    deshabilitarBotones();
+                } else if (tablero.verificarVictoria('X')) {
+                    mostrarGanador("Computadora");
+                    deshabilitarBotones();
+                } else if (esEmpate()) {
+                    mostrarGanador("Empate");
+                    deshabilitarBotones();
+                } else {
+                    // Cambiar el turno y llamar a la computadora si es necesario
+                    cambiarTurno();
+                    if (jugadorActual.getFicha() == 'X') {
+                        turnoComputadora();
+                    } else {
+                        habilitarBotones();
+                    }
+                }
+            }
+        });
     }
 
 }
