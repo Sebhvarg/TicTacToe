@@ -1,5 +1,7 @@
 package com.example.espol.ed.grupo3.tresenraya;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,13 +13,14 @@ import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.espol.ed.grupo3.tresenraya.Modelo.Computadora;
 import com.example.espol.ed.grupo3.tresenraya.Modelo.Humano;
 import com.example.espol.ed.grupo3.tresenraya.Modelo.Jugador;
-import android.media.MediaPlayer;
 
 import java.util.Objects;
 
@@ -36,6 +39,30 @@ public class TicTacToe extends AppCompatActivity {
     private ImageView playerimg;
 
     private ImageButton btnexit;
+    private boolean esNivelExperto = false;
+
+
+    private void iniciarJuego(GridLayout gridLayout) {
+        // Reiniciar el tablero y establecer el primer turno al humano
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                int index = i * 3 + j;
+                Button boton = (Button) gridLayout.getChildAt(index);
+                botones[i][j] = boton;
+                configurarBotones(boton, i, j);
+            }
+        }
+
+        // El humano siempre tiene el primer turno
+        jugadorActual = new Humano(); // Asegúrate de que el primer turno es del humano
+
+        // Si el turno es de la computadora y se ha seleccionado "Experto" o "Medio", la computadora juega automáticamente
+        if (jugadorActual.getTurno().equals("X")) { // Si la computadora es el siguiente turno
+            turnoComputadora(); // La computadora hace su primer movimiento si es su turno
+        } else {
+            habilitarBotones(); // Habilitar los botones para que el humano pueda jugar
+        }
+    }
 
     private void configurarBotones(Button boton, int fila, int columna) {
         boton.setOnClickListener(new View.OnClickListener() {
@@ -66,7 +93,7 @@ public class TicTacToe extends AppCompatActivity {
                         // Cambiar el turno y llamar a la computadora si es necesario
                         cambiarTurno();
                         if (jugadorActual.getTurno().equals("X")) {  // Si es el turno de la computadora
-                            turnoComputadora();
+                            turnoComputadora(); // La computadora realiza su movimiento
                         } else {
                             habilitarBotones();  // Habilitar botones después del turno del humano
                         }
@@ -76,8 +103,6 @@ public class TicTacToe extends AppCompatActivity {
         });
     }
 
-
-
     private void turnoComputadora() {
         if (verificarVictoria('O') || verificarVictoria('X') || esEmpate()) {
             return;  // No hacer nada si ya hay un ganador o empate
@@ -86,7 +111,14 @@ public class TicTacToe extends AppCompatActivity {
         // Deshabilitar botones mientras la computadora hace su movimiento
         deshabilitarBotones();
 
-        int[] mejorMovimiento = calcularMejorMovimiento();
+        int[] mejorMovimiento = {-1, -1}; // Inicializamos el movimiento
+
+        // Calcular el mejor movimiento de acuerdo con el nivel seleccionado
+        if (esNivelExperto) {
+            mejorMovimiento = calcularMovimientoExperto();
+        } else {
+            mejorMovimiento = calcularMovimientoMedio();
+        }
 
         if (mejorMovimiento[0] != -1 && mejorMovimiento[1] != -1) {
             playertext.animate().alpha(0.2f).setDuration(500).start();
@@ -95,9 +127,10 @@ public class TicTacToe extends AppCompatActivity {
             cpuimg.animate().alpha(1f).setDuration(200).start();
 
             // Hacer el movimiento de la computadora
+            int[] finalMejorMovimiento = mejorMovimiento;
             new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                botones[mejorMovimiento[0]][mejorMovimiento[1]].setText("X");
-                tablero[mejorMovimiento[0]][mejorMovimiento[1]] = 'X';
+                botones[finalMejorMovimiento[0]][finalMejorMovimiento[1]].setText("X");
+                tablero[finalMejorMovimiento[0]][finalMejorMovimiento[1]] = 'X';
 
                 // Cambiar la visibilidad de los elementos después de un pequeño retraso
                 new Handler(Looper.getMainLooper()).postDelayed(() -> {
@@ -121,7 +154,6 @@ public class TicTacToe extends AppCompatActivity {
             }, 1000);
         }
     }
-
 
 
 
@@ -201,7 +233,7 @@ public class TicTacToe extends AppCompatActivity {
     }
 
 
-    public int[] calcularMejorMovimiento() {
+    public int[] calcularMovimientoMedio() {
 
         int[] mejorMovimiento = {-1, -1};
 
@@ -238,7 +270,7 @@ public class TicTacToe extends AppCompatActivity {
             for (int j = 0; j < 3; j++) {
                 if (tablero[i][j] == '\0') {
                     tablero[i][j] = 'X';
-                    int valorMovimiento = minimax(false);
+                    int valorMovimiento = minimaxMedio(false);
                     tablero[i][j] = '\0';
 
                     if (valorMovimiento > mejorValor) {
@@ -252,16 +284,64 @@ public class TicTacToe extends AppCompatActivity {
         return mejorMovimiento;
     }
 
+    public int[] calcularMovimientoExperto() {
+        int[] mejorMovimiento = {-1, -1};
+        int mejorValor = Integer.MIN_VALUE; // Inicia con el peor valor posible para maximizar la puntuación
 
-    private void inicializarTablero() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                tablero[i][j] = '\0';
+                if (tablero[i][j] == '\0') { // Solo considerar las casillas vacías
+                    tablero[i][j] = 'X'; // Probar la jugada para la computadora
+                    int valorMovimiento = minimaxExperto(false); // Evaluar el movimiento
+                    tablero[i][j] = '\0'; // Revertir la jugada
+
+                    if (valorMovimiento > mejorValor) {
+                        mejorValor = valorMovimiento; // Actualizar el mejor valor
+                        mejorMovimiento[0] = i; // Guardar la fila del mejor movimiento
+                        mejorMovimiento[1] = j; // Guardar la columna del mejor movimiento
+                    }
+                }
             }
+        }
+        return mejorMovimiento;
+    }
+
+    private int minimaxExperto(boolean esTurnoHumano) {
+        // Comprobar si hay un ganador o empate
+        if (verificarVictoria('X')) return 10; // Computadora gana
+        if (verificarVictoria('O')) return -10; // Humano gana
+        if (esEmpate()) return 0; // Empate
+
+        if (esTurnoHumano) {
+            // Es el turno del humano, tratamos de minimizar la puntuación
+            int mejorValor = Integer.MAX_VALUE;
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 3; j++) {
+                    if (tablero[i][j] == '\0') { // Solo considerar las casillas vacías
+                        tablero[i][j] = 'O'; // Probar la jugada para el humano
+                        mejorValor = Math.min(mejorValor, minimaxExperto(false)); // Evaluar el movimiento
+                        tablero[i][j] = '\0'; // Revertir la jugada
+                    }
+                }
+            }
+            return mejorValor;
+        } else {
+            // Es el turno de la computadora, tratamos de maximizar la puntuación
+            int mejorValor = Integer.MIN_VALUE;
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 3; j++) {
+                    if (tablero[i][j] == '\0') { // Solo considerar las casillas vacías
+                        tablero[i][j] = 'X'; // Probar la jugada para la computadora
+                        mejorValor = Math.max(mejorValor, minimaxExperto(true)); // Evaluar el movimiento
+                        tablero[i][j] = '\0'; // Revertir la jugada
+                    }
+                }
+            }
+            return mejorValor;
         }
     }
 
-    private int minimax(boolean esTurnoHumano) {
+    private int minimaxMedio(boolean esTurnoHumano) {
         if (verificarVictoria('X')) return 10;
         if (verificarVictoria('O')) return -10;
         if (esEmpate()) return 0;
@@ -272,7 +352,7 @@ public class TicTacToe extends AppCompatActivity {
                 for (int j = 0; j < 3; j++) {
                     if (tablero[i][j] == '\0') {
                         tablero[i][j] = 'O';
-                        mejorValor = Math.min(mejorValor, minimax(false));
+                        mejorValor = Math.min(mejorValor, minimaxMedio(false));
                         tablero[i][j] = '\0';
                     }
                 }
@@ -284,7 +364,7 @@ public class TicTacToe extends AppCompatActivity {
                 for (int j = 0; j < 3; j++) {
                     if (tablero[i][j] == '\0') {
                         tablero[i][j] = 'X';
-                        mejorValor = Math.max(mejorValor, minimax(true));
+                        mejorValor = Math.max(mejorValor, minimaxMedio(true));
                         tablero[i][j] = '\0';
                     }
                 }
@@ -330,48 +410,94 @@ public class TicTacToe extends AppCompatActivity {
         }, 300); // Retraso de 300ms (ajustar si es necesario)
     }
 
-
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tic_tac_toe);
 
-        jugadorActual = new Humano();
-        cputext = findViewById(R.id.cputext);
-        cpuimg = findViewById(R.id.cpuimg);
-        playertext = findViewById(R.id.playertext);
-        playerimg = findViewById(R.id.playerimg);
-        btnexit = findViewById(R.id.btnexit);
-        GridLayout gridLayout = findViewById(R.id.gridLayout);
-        botones = new Button[3][3];
-        btnexit.setOnClickListener((new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                deshabilitarBotones();
-                Intent intent = new Intent(TicTacToe.this, MainActivity.class);
-                startActivity(intent);
+        // Crear un launcher para la actividad de selección de dificultad
+        ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    // Se obtiene el nivel de dificultad del Intent devuelto
+                    if (result.getResultCode() == RESULT_OK) {
+                        Intent data = result.getData();
+                        if (data != null) {
+                            String nivel = data.getStringExtra("nivel");
+
+                            // Configurar el nivel de dificultad
+                            if (nivel != null) {
+                                esNivelExperto = nivel.equals("Experto");
+                            }
+
+                            // Configurar la actividad de TicTacToe después de recibir el nivel
+                            setContentView(R.layout.activity_tic_tac_toe);
+
+                            cputext = findViewById(R.id.cputext);
+                            cpuimg = findViewById(R.id.cpuimg);
+                            playertext = findViewById(R.id.playertext);
+                            playerimg = findViewById(R.id.playerimg);
+                            btnexit = findViewById(R.id.btnexit);
+                            GridLayout gridLayout = findViewById(R.id.gridLayout);
+                            botones = new Button[3][3];
+
+                            btnexit.setOnClickListener(v -> {
+                                deshabilitarBotones();
+                                Intent intent = new Intent(TicTacToe.this, MainActivity.class);
+                                startActivity(intent);
+                            });
+
+                            iniciarJuego(gridLayout); // Iniciar el juego con el nivel seleccionado
+                        }
+                    }
+                }
+        );
+
+        // Redirigir a la actividad de selección de dificultad
+        Intent intent = new Intent(TicTacToe.this, SeleccionDificultadActivity.class);
+        activityResultLauncher.launch(intent); // Lanzar la actividad para seleccionar el nivel de dificultad
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            // Obtener el nivel de dificultad desde el Intent
+            String nivel = data.getStringExtra("nivel");
+
+            // Configurar el nivel de dificultad
+            if (nivel != null) {
+                if (nivel.equals("Experto")) {
+                    esNivelExperto = true;
+                } else {
+                    esNivelExperto = false;
+                }
             }
-        }));
-        //Iniciar
-        ReproductorControlador.getInstance().play();
-        inicializarTablero();
 
+            // Configurar la actividad de TicTacToe después de recibir el nivel
+            setContentView(R.layout.activity_tic_tac_toe);
 
-        cputext.animate().alpha(0.2f).setDuration(100).start();
-        cpuimg.animate().alpha(0.2f).setDuration(100).start();
+            cputext = findViewById(R.id.cputext);
+            cpuimg = findViewById(R.id.cpuimg);
+            playertext = findViewById(R.id.playertext);
+            playerimg = findViewById(R.id.playerimg);
+            btnexit = findViewById(R.id.btnexit);
+            GridLayout gridLayout = findViewById(R.id.gridLayout);
+            botones = new Button[3][3];
 
-        for (int i = 0; i < 3; i++){
-            for (int j = 0; j < 3; j++){
-                int index = i * 3 + j;
-                Button boton = (Button) gridLayout.getChildAt(index);
-                botones[i][j] = boton;
-                configurarBotones(boton, i, j);
-            }
+            btnexit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    deshabilitarBotones();
+                    Intent intent = new Intent(TicTacToe.this, MainActivity.class);
+                    startActivity(intent);
+                }
+            });
+
+            iniciarJuego(gridLayout); // Iniciar el juego con el nivel seleccionado
         }
     }
+
 
 }
 
