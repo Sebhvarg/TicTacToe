@@ -202,43 +202,20 @@ public class TicTacToe extends AppCompatActivity {
 
 
     public int[] calcularMejorMovimiento() {
-
+        int mejorValor = Integer.MIN_VALUE;
         int[] mejorMovimiento = {-1, -1};
 
+        // First move optimization: take center if available
+        if (tablero[1][1] == '\0') {
+            return new int[]{1, 1};
+        }
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (tablero[i][j] == '\0') {
                     tablero[i][j] = 'X';
-                    if (verificarVictoria('X')) {
-                        tablero[i][j] = '\0';
-                        return new int[]{i, j};
-                    }
-                    tablero[i][j] = '\0';
-                }
-            }
-        }
-
-
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                if (tablero[i][j] == '\0') {
-                    tablero[i][j] = 'O';
-                    if (verificarVictoria('O')) {
-                        tablero[i][j] = '\0';
-                        return new int[]{i, j};
-                    }
-                    tablero[i][j] = '\0';
-                }
-            }
-        }
-
-        int mejorValor = Integer.MIN_VALUE;
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                if (tablero[i][j] == '\0') {
-                    tablero[i][j] = 'X';
-                    int valorMovimiento = minimax(false);
+                    int valorMovimiento = minimax(0, true,
+                            Integer.MIN_VALUE, Integer.MAX_VALUE);
                     tablero[i][j] = '\0';
 
                     if (valorMovimiento > mejorValor) {
@@ -250,6 +227,7 @@ public class TicTacToe extends AppCompatActivity {
             }
         }
         return mejorMovimiento;
+
     }
 
 
@@ -261,9 +239,10 @@ public class TicTacToe extends AppCompatActivity {
         }
     }
 
-    private int minimax(boolean esTurnoHumano) {
-        if (verificarVictoria('X')) return 10;
-        if (verificarVictoria('O')) return -10;
+    private int minimax(int depth, boolean esTurnoHumano, int alpha, int beta) {
+        // Check terminal states
+        if (verificarVictoria('X')) return 10 - depth;
+        if (verificarVictoria('O')) return -10 + depth;
         if (esEmpate()) return 0;
 
         if (esTurnoHumano) {
@@ -272,8 +251,14 @@ public class TicTacToe extends AppCompatActivity {
                 for (int j = 0; j < 3; j++) {
                     if (tablero[i][j] == '\0') {
                         tablero[i][j] = 'O';
-                        mejorValor = Math.min(mejorValor, minimax(false));
+                        mejorValor = Math.min(mejorValor,
+                                minimax(depth + 1, false, alpha, beta));
                         tablero[i][j] = '\0';
+
+                        beta = Math.min(beta, mejorValor);
+                        if (alpha >= beta) {
+                            return mejorValor; // Alpha-beta pruning
+                        }
                     }
                 }
             }
@@ -284,8 +269,14 @@ public class TicTacToe extends AppCompatActivity {
                 for (int j = 0; j < 3; j++) {
                     if (tablero[i][j] == '\0') {
                         tablero[i][j] = 'X';
-                        mejorValor = Math.max(mejorValor, minimax(true));
+                        mejorValor = Math.max(mejorValor,
+                                minimax(depth + 1, true, alpha, beta));
                         tablero[i][j] = '\0';
+
+                        alpha = Math.max(alpha, mejorValor);
+                        if (alpha >= beta) {
+                            return mejorValor; // Alpha-beta pruning
+                        }
                     }
                 }
             }
