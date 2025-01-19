@@ -114,5 +114,6 @@ public class HistorialManager {
         jugadas.clear();
         ganador = null;
     }
+    //holaaaa
 
 }
