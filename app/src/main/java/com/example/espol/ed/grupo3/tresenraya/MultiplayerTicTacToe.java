@@ -138,8 +138,8 @@ public class MultiplayerTicTacToe extends AppCompatActivity {
         ReproductorControlador.getInstance().init(this, R.raw.music);
         ReproductorControlador.getInstance().play();
 
-        player1Text = findViewById(R.id.player1Text);
-        player2Text = findViewById(R.id.player2Text);
+        player1Text = findViewById(R.id.player1text);
+        player2Text = findViewById(R.id.player2text);
         GridLayout gridLayout = findViewById(R.id.gridLayout);
         botones = new Button[3][3];
 

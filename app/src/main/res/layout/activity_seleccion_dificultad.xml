@@ -27,7 +27,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="211dp"
+                android:layout_height="266dp"
                 android:orientation="vertical"></LinearLayout>
 
             <LinearLayout
@@ -53,7 +53,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:backgroundTint="@color/black"
-                    android:drawableLeft="@drawable/player24x24"
                     android:fontFamily="@font/designer"
                     android:insetTop="0dp"
                     android:text="MEDIO"
@@ -71,7 +70,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:backgroundTint="@color/black"
-                    android:drawableLeft="@drawable/multiplayer24x24"
                     android:fontFamily="@font/designer"
                     android:insetTop="0dp"
                     android:text="DIFICIL"

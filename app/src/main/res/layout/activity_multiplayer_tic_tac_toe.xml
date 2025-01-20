@@ -7,31 +7,11 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tic-Tac-Toe"
-        android:textSize="32sp"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        android:layout_gravity="center"
-        android:layout_marginBottom="16dp"/>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:gravity="center"
         android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="651dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="@font/roboto_medium"
-            android:text="Abandonar juego"
-            android:textAlignment="textEnd"
-            android:textColor="@color/black" />
 
         <ImageButton
             android:id="@+id/btnexit"
@@ -42,36 +22,27 @@
             android:scaleType="centerInside"
             app:srcCompat="@drawable/exit" />
 
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="651dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/roboto_medium"
+            android:text="Abandonar juego"
+            android:textAlignment="textStart"
+            android:textColor="@color/black" />
+
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/playerbar"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:gravity="center"
+        android:gravity="center|end"
         android:orientation="horizontal"
         android:visibility="visible">
 
         <!-- Icono y texto del Jugador 1 -->
-        <ImageView
-            android:id="@+id/player1"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginEnd="8dp"
-            android:scaleType="centerInside"
-            app:srcCompat="@drawable/player1" />
-
-        <TextView
-            android:id="@+id/player1text"
-            android:layout_width="106dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:fontFamily="@font/roboto_medium"
-            android:text="Jugador 1 (O)"
-            android:textAlignment="viewStart"
-            android:textColor="#418FBF"
-            android:textSize="24sp"
-            android:textStyle="bold" />
 
         <!-- Icono y texto del Jugador 2 -->
 
@@ -98,30 +69,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center">
-
-        <TextView
-            android:id="@+id/player1Text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="24sp"
-            android:textColor="#BE0413"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/player2Text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="24sp"
-            android:textColor="#418FBF"
-            android:textStyle="bold"
-            android:layout_marginStart="32dp" />
-    </LinearLayout>
-<LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="650dp"
+        android:layout_height="500dp"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -271,5 +219,38 @@
                 app:strokeColor="#000000"
                 app:strokeWidth="3dp" />
         </GridLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/playerbarp1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center|start"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+        <!-- Icono y texto del Jugador 1 -->
+        <ImageView
+            android:id="@+id/player1"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginEnd="8dp"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/player1" />
+
+        <TextView
+            android:id="@+id/player1text"
+            android:layout_width="191dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/roboto_medium"
+            android:text="Jugador 1 (O)"
+            android:textAlignment="viewStart"
+            android:textColor="#418FBF"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <!-- Icono y texto del Jugador 2 -->
+
     </LinearLayout>
 </LinearLayout>

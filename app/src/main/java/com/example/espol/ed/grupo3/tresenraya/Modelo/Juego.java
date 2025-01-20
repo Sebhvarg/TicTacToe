@@ -75,6 +75,7 @@ public class Juego {
             // Hacer el movimiento de la computadora
             new Handler(Looper.getMainLooper()).postDelayed(() -> {
                 botones[mejorMovimiento[0]][mejorMovimiento[1]].setText("X");
+                botones[mejorMovimiento[0]][mejorMovimiento[1]].setTextColor(Color.parseColor("#BF0413"));
                 tablero.getTablero()[mejorMovimiento[0]][mejorMovimiento[1]] = 'X';
 
                 // Cambiar la visibilidad de los elementos después de un pequeño retraso

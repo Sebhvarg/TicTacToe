@@ -1,6 +1,7 @@
 package com.example.espol.ed.grupo3.tresenraya;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -47,7 +48,7 @@ public class TicTacToeActivity extends AppCompatActivity {
                                     if (boton.getText().toString().isEmpty()) {
                                         // Marcar la ficha del jugador
                                         boton.setText("O"); // El jugador coloca su ficha como 'O'
-
+                                        boton.setTextColor(Color.parseColor("#418FBF"));
                                         // Actualizar el tablero con la ficha del jugador
                                         juego.getTablero().getTablero()[fila][columna] = 'O';
 
