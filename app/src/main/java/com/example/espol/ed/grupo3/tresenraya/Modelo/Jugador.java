@@ -8,7 +8,4 @@ public class Jugador {
     public char getFicha(){
         return ficha;
     }
-    public void setTurno(char ficha) {
-        this.ficha = ficha;
-    }
 }

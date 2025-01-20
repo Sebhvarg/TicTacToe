@@ -6,7 +6,7 @@ public class Tablero {
         tablero = new char[3][3];
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                tablero[i][j] = '\0'; // Vacío
+                tablero[i][j] = '\0';
             }
         }
     }
@@ -30,11 +30,8 @@ public class Tablero {
                 return true;
             }
         }
-        if ((tablero[0][0] == jugador && tablero[1][1] == jugador && tablero[2][2] == jugador) ||
-                (tablero[0][2] == jugador && tablero[1][1] == jugador && tablero[2][0] == jugador)) {
-            return true;
-        }
-        return false;
+        return (tablero[0][0] == jugador && tablero[1][1] == jugador && tablero[2][2] == jugador) ||
+                (tablero[0][2] == jugador && tablero[1][1] == jugador && tablero[2][0] == jugador);
     }
 
     public boolean esEmpate() {

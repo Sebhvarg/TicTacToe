@@ -20,7 +20,7 @@ public class MultiplayerTicTacToe extends AppCompatActivity {
 
     private char[][] tablero = new char[3][3];
     private Button[][] botones;
-    private char turnoActual = PLAYER_X; // Iniciar con el Jugador 1 (X)
+    private char turnoActual = PLAYER_X;
     private TextView player1Text, player2Text;
 
     private void configurarBotones(Button boton, int fila, int columna) {
@@ -177,90 +177,4 @@ public class MultiplayerTicTacToe extends AppCompatActivity {
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-//    private void simularArbol(char[][] tableroActual, char jugador, NodoArbol nodo) {
-//        // Recorrer todas las casillas
-//        for (int i = 0; i < 3; i++) {
-//            for (int j = 0; j < 3; j++) {
-//                if (tableroActual[i][j] == '\0') { // Si la casilla está vacía
-//                    char[][] nuevoEstado = NodoArbol.copiarTablero(tableroActual);
-//                    nuevoEstado[i][j] = jugador; // Marcar movimiento
-//                    NodoArbol nuevoNodo = new NodoArbol(nuevoEstado);
-//                    nodo.hijos.add(nuevoNodo);
-//
-//                    // Cambiar turno para simular siguiente movimiento
-//                    char siguienteJugador = (jugador == PLAYER_X) ? PLAYER_O : PLAYER_X;
-//                    simularArbol(nuevoEstado, siguienteJugador, nuevoNodo);
-//                }
-//            }
-//        }
-//    }
-//
-//    private void dibujarArbol(NodoArbol nodo, int nivel) {
-//        // Imprimir el nodo actual
-//        StringBuilder logNodo = new StringBuilder();
-//        for (char[] fila : nodo.estado) {
-//            logNodo.append("| ");
-//            for (char celda : fila) {
-//                logNodo.append(celda == '\0' ? " " : celda).append(" | ");
-//            }
-//            logNodo.append("\n");
-//        }
-//        Log.d("TicTacToeTree", "Nivel " + nivel + ":\n" + logNodo);
-//
-//        // Dibujar hijos recursivamente
-//        for (NodoArbol hijo : nodo.hijos) {
-//            dibujarArbol(hijo, nivel + 1);
-//        }
-//    }
-//
-//    private void generarYMostrarArbol() {
-//        NodoArbol raiz = new NodoArbol(tablero);
-//        simularArbol(tablero, turnoActual, raiz);
-//        dibujarArbol(raiz, 0);
-//    }
-//
-//    // toy copiando el min max pero a mi mod prueba para resolver el min max no tan
-//    // bueno
-//    private void movimientoIA() {
-//
-//        for (int i = 0; i < 3; i++) {
-//            for (int j = 0; j < 3; j++) {
-//                if (tablero[i][j] == '\0') {
-//                    tablero[i][j] = PLAYER_O;
-//                    botones[i][j].setText("O");
-//                    botones[i][j].setTextColor(Color.parseColor("#418FBF"));
-//                    return;
-//                }
-//            }
-//        }
-//    }
-//    // presentación de estadisticas
-//    private static int victoriasJugador1 = 0;
-//    private static int victoriasJugador2 = 0;
-//    private static int empates = 0;
-//
-//    private void registrarEstadisticas(String ganador) {
-//        if (ganador.equals("Jugador 1")) {
-//            victoriasJugador1++;
-//        } else if (ganador.equals("Jugador 2")) {
-//            victoriasJugador2++;
-//        } else if (ganador.equals("Empate")) {
-//            empates++;
-//        }
-//        Log.d("Estadísticas", "Jugador 1: " + victoriasJugador1 +
-//                ", Jugador 2: " + victoriasJugador2 +
-//                ", Empates: " + empates);
-//    }
-//
 }

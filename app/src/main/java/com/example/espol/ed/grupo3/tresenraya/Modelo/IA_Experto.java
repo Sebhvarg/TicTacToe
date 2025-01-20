@@ -2,7 +2,6 @@ package com.example.espol.ed.grupo3.tresenraya.Modelo;
 
 public class IA_Experto {
     private Tablero tablero;
-
     public IA_Experto(Tablero tablero) {
         this.tablero = tablero;
     }
@@ -10,18 +9,15 @@ public class IA_Experto {
     public int[] calcularMovimiento() {
         int mejorValor = Integer.MIN_VALUE;
         int[] mejorMovimiento = {-1, -1};
-
         if (tablero.getTablero()[1][1] == '\0') {
             return new int[]{1, 1};
         }
-
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (tablero.getTablero()[i][j] == '\0') {
                     tablero.colocarFicha(i, j, 'X');
                     int valorMovimiento = minimaxExperto(0, true, Integer.MIN_VALUE, Integer.MAX_VALUE);
                     tablero.vaciarCasilla(i, j);
-
                     if (valorMovimiento > mejorValor) {
                         mejorValor = valorMovimiento;
                         mejorMovimiento[0] = i;
@@ -46,7 +42,6 @@ public class IA_Experto {
                         tablero.colocarFicha(i, j, 'O');
                         mejorValor = Math.min(mejorValor, minimaxExperto(depth + 1, false, alpha, beta));
                         tablero.vaciarCasilla(i, j);
-
                         beta = Math.min(beta, mejorValor);
                         if (alpha >= beta) {
                             return mejorValor;
