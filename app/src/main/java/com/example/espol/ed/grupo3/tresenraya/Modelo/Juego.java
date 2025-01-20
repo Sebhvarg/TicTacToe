@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.espol.ed.grupo3.tresenraya.GanadorActivity;
+import com.example.espol.ed.grupo3.tresenraya.HistorialManager;
 import com.example.espol.ed.grupo3.tresenraya.R;
 
 public class Juego {
@@ -23,12 +24,12 @@ public class Juego {
     private Button[][] botones;
     private TextView playertext, cputext;
     private ImageView playerimg, cpuimg;
-
+    private HistorialManager historialManager;
 
     public Tablero getTablero(){
         return tablero;
     }
-    public Juego(Context context, boolean experto,TextView playertext, TextView cputext, ImageView playerimg, ImageView cpuimg ) {
+    public Juego(Context context, boolean experto,TextView playertext, TextView cputext, ImageView playerimg, ImageView cpuimg, HistorialManager historialManager ) {
         this.context = context;
         tablero = new Tablero();
         jugadorX = new Jugador('X');
@@ -41,6 +42,7 @@ public class Juego {
         this.cputext = cputext;
         this.playerimg = playerimg;
         this.cpuimg = cpuimg;
+        this.historialManager = historialManager;
     }
 
     private boolean verificarEstadoDelJuego() {
@@ -78,7 +80,7 @@ public class Juego {
                 botones[mejorMovimiento[0]][mejorMovimiento[1]].setText("X");
                 botones[mejorMovimiento[0]][mejorMovimiento[1]].setTextColor(Color.parseColor("#BF0413"));
                 tablero.getTablero()[mejorMovimiento[0]][mejorMovimiento[1]] = jugadorX.getFicha();
-
+                historialManager.registrarJugada("Computadora", mejorMovimiento[0], mejorMovimiento[1]);
                 new Handler(Looper.getMainLooper()).postDelayed(() -> {
                     cputext.animate().alpha(0.3f).setDuration(500).start();
                     cpuimg.animate().alpha(0.3f).setDuration(500).start();
@@ -120,6 +122,8 @@ public class Juego {
         if (context instanceof Activity) {
             ((Activity) context).overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         }
+        historialManager.setGanador(ganador);
+        historialManager.guardarHistorial();
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             if (ganador.equals("Humano")) {
                 playertext.animate().alpha(1f).setDuration(500).start();
@@ -180,6 +184,7 @@ public class Juego {
                 boton.setTextColor(Color.parseColor("#418FBF"));
                 boton.setText(jugadorActual.getFicha());
                 tablero.getTablero()[filaSeleccionada][columnaSeleccionada] = jugadorActual.getFicha();
+                historialManager.registrarJugada("Humano", fila, columna);
                 deshabilitarBotones();
                 if (verificarEstadoDelJuego()) {
                     return;

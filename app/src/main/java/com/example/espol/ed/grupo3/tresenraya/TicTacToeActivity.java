@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.activity.result.ActivityResultLauncher;
@@ -17,6 +18,7 @@ public class TicTacToeActivity extends AppCompatActivity {
     private TextView playertext, cputext;
     private ImageView playerimg, cpuimg;
     private Juego juego;
+    private HistorialManager historialManager;
 
     private final ActivityResultLauncher<Intent> seleccionarDificultadLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
@@ -25,7 +27,7 @@ public class TicTacToeActivity extends AppCompatActivity {
                     if (data != null) {
                         String nivel = data.getStringExtra("nivel");
                         boolean esExperto = "Experto".equals(nivel);
-                        juego = new Juego(this, esExperto, playertext, cputext, playerimg, cpuimg);
+                        juego = new Juego(this, esExperto, playertext, cputext, playerimg, cpuimg, historialManager);
                         juego.configurarBotones(botones);
                         juego.habilitarBotones();
                         for (int i = 0; i < 3; i++) {
@@ -56,6 +58,11 @@ public class TicTacToeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tic_tac_toe);
+        //AQUI ES PARA EL HISTORIAL
+        historialManager = HistorialManager.getInstance(this);
+
+        ReproductorControlador.getInstance().init(this, R.raw.music);
+        ReproductorControlador.getInstance().play();
         botones = new Button[3][3];
         playertext = findViewById(R.id.playertext);
         cputext = findViewById(R.id.cputext);
@@ -72,6 +79,10 @@ public class TicTacToeActivity extends AppCompatActivity {
         botones[2][2] = findViewById(R.id.button_22);
         Intent intent = new Intent(TicTacToeActivity.this, SeleccionDificultadActivity.class);
         seleccionarDificultadLauncher.launch(intent);
+        ImageButton btnExit = findViewById(R.id.btnexit);
+        btnExit.setOnClickListener(v -> {
+            finish();
+        });
     }
 }
 
