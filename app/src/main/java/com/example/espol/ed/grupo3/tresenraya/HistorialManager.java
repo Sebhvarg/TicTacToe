@@ -1,6 +1,10 @@
 package com.example.espol.ed.grupo3.tresenraya;
 
 import android.content.Context;
+import android.os.Bundle;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -11,13 +15,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-public class HistorialManager {
+public class HistorialManager extends AppCompatActivity {
     private static HistorialManager instance;
     private ArrayList<String> jugadas;
     private Context context;
     private String ganador;
     private final String fechaPartida;
     private String modoJuego;
+
+    private TextView txtHistorial;
 
     private HistorialManager(Context context) {
         this.context = context;
@@ -115,4 +121,12 @@ public class HistorialManager {
         jugadas.clear();
         ganador = null;
     }
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_historial);
+        txtHistorial = findViewById(R.id.textHistorial);
+
+    }
+
 }

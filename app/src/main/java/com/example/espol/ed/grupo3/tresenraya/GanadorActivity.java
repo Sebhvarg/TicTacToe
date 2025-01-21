@@ -16,8 +16,9 @@ public class GanadorActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ganador);
-        TextView textoGanador = findViewById(R.id.textoGanador);
+        TextView textoGanador = findViewById(R.id.textTitle);
         Button botonReiniciar = findViewById(R.id.botonReiniciar);
+        Button botonHistorial = findViewById(R.id.btnhistorial);
         View layoutPrincipal = findViewById(R.id.layoutPrincipal); // Contenedor principal
         Animation expandAnimation = AnimationUtils.loadAnimation(this, R.anim.expand_animation);
         layoutPrincipal.startAnimation(expandAnimation);
@@ -45,6 +46,12 @@ public class GanadorActivity extends AppCompatActivity {
         }
         botonReiniciar.setOnClickListener(v -> {
             Intent intent = new Intent(GanadorActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        });
+
+        botonHistorial.setOnClickListener(v -> {
+            Intent intent = new Intent(GanadorActivity.this, HistorialManager.class);
             startActivity(intent);
             finish();
         });
