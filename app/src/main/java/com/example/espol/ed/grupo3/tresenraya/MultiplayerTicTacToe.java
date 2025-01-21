@@ -79,14 +79,19 @@ public class MultiplayerTicTacToe extends AppCompatActivity {
     private void mostrarGanador(String ganador) {
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
+
             if (ganador.contains("Jugador 1")) {
                 player1Text.animate().alpha(1f).setDuration(500).start();
             } else if (ganador.contains("Jugador 2")) {
                 player2Text.animate().alpha(1f).setDuration(500).start();
             }
+            // Solo un Intent para iniciar GanadorActivity
             Intent intent = new Intent(this, GanadorActivity.class);
             intent.putExtra("GANADOR", ganador);
+            intent.putExtra("MODO_JUEGO", "MULTIJUGADOR"); // Agrega el modo de juego
             startActivity(intent);
+
+            // Finaliza la actividad actual
             finish();
         }, 300);
     }
