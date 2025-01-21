@@ -45,6 +45,17 @@ public class GanadorActivity extends AppCompatActivity {
                     break;
             }
         }
+
+        String modoJuego = getIntent().getStringExtra("MODO_JUEGO");
+        if (modoJuego == null) {
+            modoJuego = "SINGLEPLAYER"; // Valor por defecto si no se pasa el modo de juego
+        }
+
+        // Ocultar botón historial si es multijugador
+        if ("MULTIJUGADOR".equals(modoJuego)) {
+            botonHistorial.setVisibility(View.GONE);
+        }
+
         botonReiniciar.setOnClickListener(v -> {
             Intent intent = new Intent(GanadorActivity.this, MainActivity.class);
             startActivity(intent);
@@ -57,11 +68,19 @@ public class GanadorActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
-        botonReiniciarPartida.setOnClickListener(v -> reiniciarPartida());
+
+
+        String finalModoJuego = modoJuego;
+        botonReiniciarPartida.setOnClickListener(v -> reiniciarPartida(finalModoJuego));
 
     }
-    private void reiniciarPartida() {
-        Intent intent = new Intent(GanadorActivity.this, TicTacToeActivity.class);
+    private void reiniciarPartida(String modoJuego) {
+        Intent intent;
+        if ("MULTIJUGADOR".equals(modoJuego)) {
+            intent = new Intent(GanadorActivity.this, MultiplayerTicTacToe.class);
+        } else {
+            intent = new Intent(GanadorActivity.this, TicTacToeActivity.class);
+        }
         startActivity(intent);
         finish();
     }
