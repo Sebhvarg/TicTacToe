@@ -109,7 +109,6 @@ public class HistorialManager extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_historial);
         txtHistorial = findViewById(R.id.textHistorial);
-
         String historialRecuperado = obtenerHistorialDePreferencias();
         txtHistorial.setText(historialRecuperado); // Mostramos el historial en el TextView
     }
