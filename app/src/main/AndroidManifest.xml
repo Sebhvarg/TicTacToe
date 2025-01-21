@@ -21,6 +21,9 @@
             android:name=".GanadorActivity"
             android:exported="false" />
 
+        <activity android:name=".HistorialManager"
+            android:exported="false" />
+
         <meta-data
             android:name="com.google.android.actions"
             android:resource="@xml/style" />

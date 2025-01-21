@@ -32,6 +32,12 @@ public class HistorialManager extends AppCompatActivity {
                 .format(new Date());
     }
 
+    public HistorialManager(){
+        this.jugadas = new ArrayList<>();
+        this.fechaPartida = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+                .format(new Date());
+    }
+
     public static synchronized HistorialManager getInstance(Context context) {
         if (instance == null) {
             instance = new HistorialManager(context);
