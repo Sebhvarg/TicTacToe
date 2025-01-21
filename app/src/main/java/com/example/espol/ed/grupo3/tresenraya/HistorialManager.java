@@ -7,14 +7,8 @@ import android.util.Log;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 
@@ -25,59 +19,72 @@ public class HistorialManager extends AppCompatActivity {
     private String ganador;
     private final String fechaPartida;
     private String modoJuego;
-
     private TextView txtHistorial;
 
-    // Constructor privado para inicializar la instancia con el contexto
-    public HistorialManager() {
-        this.jugadas = new ArrayList<>();
-        this.fechaPartida = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
-    }
-
-    // Constructor con contexto
-    public HistorialManager(Context context) {
-        this.jugadas = new ArrayList<>();
-        this.fechaPartida = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
+    // Constructor privado único
+    private HistorialManager(Context context) {
         this.context = context;
+        this.jugadas = new ArrayList<>();
+        this.fechaPartida = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+                .format(new Date());
     }
 
-    // Método estático para obtener la instancia del HistorialManager
+    // Método singleton para obtener la instancia
     public static synchronized HistorialManager getInstance(Context context) {
         if (instance == null) {
-            instance = new HistorialManager(context);
+            instance = new HistorialManager(context.getApplicationContext());
         }
-        instance.context = context; // Asignamos el contexto a la instancia
         return instance;
+    }
+
+    // Método para iniciar una nueva partida
+    public void iniciarNuevaPartida(String modo) {
+        this.jugadas.clear();
+        this.ganador = null;
+        this.modoJuego = modo;
+        guardarHistorialEnPreferencias();
     }
 
     // Método para guardar el historial en SharedPreferences
     public void guardarHistorialEnPreferencias() {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("Historial", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        StringBuilder historial = new StringBuilder();
-        historial.append("=== Historial de Partida ===\n");
-        historial.append("Fecha: " + fechaPartida + "\n");
-
-        // Concatenamos las jugadas
-        for (int i = 0; i < jugadas.size(); i++) {
-            historial.append("Jugada " + (i + 1) + ": " + jugadas.get(i) + "\n");
+        if (context == null) {
+            Log.e("HistorialManager", "Contexto no disponible");
+            return;
         }
 
-        // Agregamos el resultado final
+        SharedPreferences sharedPreferences = context.getSharedPreferences("Historial", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        StringBuilder historial = new StringBuilder();
+        historial.append("=== HISTORIAL DE PARTIDA ===\n\n");
+        historial.append("📅 Fecha: ").append(fechaPartida).append("\n");
+        if (modoJuego != null) {
+            historial.append("🎮 Modo: ").append(modoJuego).append("\n\n");
+        }
+
+        // Agregamos las jugadas
+        for (int i = 0; i < jugadas.size(); i++) {
+            historial.append("► ").append(jugadas.get(i)).append("\n");
+        }
+
+        // Agregamos el resultado final si existe
         if (ganador != null) {
-            historial.append("\nResultado final: ");
+            historial.append("\n=== RESULTADO FINAL ===\n");
             if (ganador.equals("Empate")) {
-                historial.append("¡Empate!");
+                historial.append("🤝 ¡Empate!");
             } else {
-                historial.append("¡" + ganador + " ha ganado!");
+                historial.append("🏆 ¡").append(ganador).append(" ha ganado!");
             }
         }
 
         editor.putString("historial", historial.toString());
-        editor.apply(); // Aplicamos los cambios
+        editor.apply();
+
+        // Actualizamos el TextView si existe
+        actualizarTextView();
     }
 
-    // Método para recuperar el historial de SharedPreferences
+    // Método para recuperar el historial
     public String obtenerHistorialDePreferencias() {
         if (context == null) {
             Log.e("HistorialManager", "Contexto no disponible");
@@ -89,28 +96,38 @@ public class HistorialManager extends AppCompatActivity {
 
     // Método para registrar una jugada
     public void registrarJugada(String jugador, int fila, int columna) {
-        String posicion = String.format("[%d,%d]", fila + 1, columna + 1);
-        String simbolo = (jugador.equals("Computadora") || jugador.equals("Humano")) ? "X" : "O";
-        String jugada = String.format("%s colocó su %s en %s", jugador, simbolo, posicion);
+        String posicion = String.format("Fila %d, Columna %d", fila + 1, columna + 1);
+        String simbolo = jugador.equals("Computadora") ? "X" : "O";
+        String jugada = String.format("%s colocó %s en %s", jugador, simbolo, posicion);
         jugadas.add(jugada);
         Log.d("HistorialManager", "Jugada registrada: " + jugada);
-        guardarHistorialEnPreferencias(); // Guardamos el historial actualizado
+        guardarHistorialEnPreferencias();
     }
 
     // Método para establecer el ganador
     public void setGanador(String ganador) {
         this.ganador = ganador;
-        guardarHistorialEnPreferencias(); // Guardamos el historial con el ganador
+        guardarHistorialEnPreferencias();
     }
 
-    // Método onCreate que se ejecuta al iniciar la actividad
+    // Método para actualizar el TextView
+    private void actualizarTextView() {
+        if (txtHistorial != null) {
+            txtHistorial.setText(obtenerHistorialDePreferencias());
+        }
+    }
+
+    // Método para establecer el TextView
+    public void setTextView(TextView textView) {
+        this.txtHistorial = textView;
+        actualizarTextView();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_historial);
         txtHistorial = findViewById(R.id.textHistorial);
-        String historialRecuperado = obtenerHistorialDePreferencias();
-        txtHistorial.setText(historialRecuperado); // Mostramos el historial en el TextView
+        actualizarTextView();
     }
 }
-

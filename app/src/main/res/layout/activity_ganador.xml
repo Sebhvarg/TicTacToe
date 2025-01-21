@@ -23,22 +23,6 @@
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/btnhistorial"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:backgroundTint="@color/black"
-            android:fontFamily="@font/roboto_medium"
-            android:insetTop="0dp"
-            android:text="Ver Historial"
-            android:textAlignment="center"
-            android:textColor="@color/backround_light"
-            android:textSize="24sp"
-            app:cornerRadius="10dp"
-            app:strokeColor="@color/primary_light"
-            app:strokeWidth="2dp" />
-
-        <Button
             android:id="@+id/botonReiniciar"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
