@@ -19,13 +19,12 @@ public class GanadorActivity extends AppCompatActivity {
         TextView textoGanador = findViewById(R.id.textTitle);
         Button botonReiniciar = findViewById(R.id.botonReiniciar);
         Button botonHistorial = findViewById(R.id.btnhistorial);
-        View layoutPrincipal = findViewById(R.id.layoutPrincipal); // Contenedor principal
+        Button botonReiniciarPartida = findViewById(R.id.botonReiniciarPartida);
+        View layoutPrincipal = findViewById(R.id.layoutPrincipal);
         Animation expandAnimation = AnimationUtils.loadAnimation(this, R.anim.expand_animation);
         layoutPrincipal.startAnimation(expandAnimation);
         String ganador = getIntent().getStringExtra("GANADOR");
         Log.d("GANADOR_RECEPCIONADO", ganador);
-
-
 
         if (ganador != null) {
             switch (ganador) {
@@ -58,6 +57,12 @@ public class GanadorActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
+        botonReiniciarPartida.setOnClickListener(v -> reiniciarPartida());
 
+    }
+    private void reiniciarPartida() {
+        Intent intent = new Intent(GanadorActivity.this, TicTacToeActivity.class);
+        startActivity(intent);
+        finish();
     }
 }
