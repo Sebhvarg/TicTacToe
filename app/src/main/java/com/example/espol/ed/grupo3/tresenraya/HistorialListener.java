@@ -32,8 +32,11 @@ public class HistorialListener extends AppCompatActivity {
         txtHistorial.setText(historial);
 
         btn.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
+                txtHistorial.setText("");
+                HistorialManager.getInstance().clear();
                 Intent intent = new Intent(HistorialListener.this, MainActivity.class);
                 startActivity(intent);
             }

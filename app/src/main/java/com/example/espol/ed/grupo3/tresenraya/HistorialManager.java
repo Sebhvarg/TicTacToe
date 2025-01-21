@@ -36,6 +36,10 @@ public class HistorialManager {
         return instance;
     }
 
+    public void clear(){
+        jugadas.clear();
+    }
+
     public void setContext(Context context) {
         this.context = context.getApplicationContext();
     }
