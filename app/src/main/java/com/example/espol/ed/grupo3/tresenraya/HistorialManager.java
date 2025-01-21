@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +21,7 @@ public class HistorialManager {
     private Context context;
     private String ganador;
     private final String fechaPartida;
+
 
     private HistorialManager(){
         this.jugadas = new ArrayList<>();
@@ -85,5 +87,6 @@ public class HistorialManager {
         this.ganador = ganador;
         guardarHistorialEnPreferencias();
     }
+
 
 }

@@ -18,28 +18,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:gravity="end"
-            android:orientation="horizontal">
-
-            <ImageButton
-                android:id="@+id/imageButton"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginLeft="0dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="10dp"
-                android:layout_weight="0"
-                android:background="#00FFFFFF"
-                android:scaleType="centerInside"
-                app:srcCompat="@drawable/settings" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:orientation="horizontal"
             android:rotation="0"
             android:rotationY="0">

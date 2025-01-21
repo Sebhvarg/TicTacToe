@@ -12,6 +12,31 @@
         android:background="@drawable/xobg"
         android:orientation="vertical">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="15dp"
+            android:gravity="bottom"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/btnVolver"
+                android:layout_width="59dp"
+                android:layout_height="42dp"
+                android:layout_marginLeft="20dp"
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/exit" />
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="33dp"
+                android:layout_marginLeft="2dp"
+                android:layout_weight="1"
+                android:text="Volver al menú principal" />
+        </LinearLayout>
+
         <TextView
             android:id="@+id/textTitle"
             android:layout_width="wrap_content"
