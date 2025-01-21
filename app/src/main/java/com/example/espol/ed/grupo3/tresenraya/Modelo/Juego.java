@@ -123,7 +123,6 @@ public class Juego {
             ((Activity) context).overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         }
         historialManager.setGanador(ganador);
-        historialManager.guardarHistorial();
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             if (ganador.equals("Humano")) {
                 playertext.animate().alpha(1f).setDuration(500).start();
@@ -134,7 +133,6 @@ public class Juego {
             }
             Intent intent = new Intent(context, GanadorActivity.class);
             intent.putExtra("GANADOR", ganador.trim());
-            Log.d("GANADOR", ganador);
             context.startActivity(intent);
             if (context instanceof Activity) {
                 ((Activity) context).finish();
@@ -184,7 +182,7 @@ public class Juego {
                 boton.setTextColor(Color.parseColor("#418FBF"));
                 boton.setText(jugadorActual.getFicha());
                 tablero.getTablero()[filaSeleccionada][columnaSeleccionada] = jugadorActual.getFicha();
-                historialManager.registrarJugada("Humano", fila, columna);
+                historialManager.registrarJugada("Humano", filaSeleccionada, columnaSeleccionada); // Usar las variables correctas
                 deshabilitarBotones();
                 if (verificarEstadoDelJuego()) {
                     return;

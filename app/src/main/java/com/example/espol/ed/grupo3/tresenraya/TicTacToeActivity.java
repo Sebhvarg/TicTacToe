@@ -40,6 +40,7 @@ public class TicTacToeActivity extends AppCompatActivity {
                                         boton.setText("O");
                                         boton.setTextColor(Color.parseColor("#418FBF"));
                                         juego.getTablero().getTablero()[fila][columna] = 'O';
+                                        historialManager.registrarJugada("Humano", fila, columna); // Usar las variables correctas
                                         if (juego.verificarVictoria()) {
                                             juego.mostrarGanador("Humano");
                                         } else {
