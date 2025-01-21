@@ -12,13 +12,39 @@
         android:background="@drawable/xobg"
         android:orientation="vertical">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:gravity="bottom"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/btnVolver"
+                android:layout_width="69dp"
+                android:layout_height="35dp"
+                android:background="@android:color/transparent"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/exit" />
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_weight="1"
+                android:text="Volver al menú principal"
+                android:textColor="#000000"
+                android:textStyle="bold" />
+        </LinearLayout>
+
         <TextView
             android:id="@+id/textTitle"
             android:layout_width="wrap_content"
+            android:fontFamily="@font/designer"
+
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:gravity="center"
-            android:text="Historial"
+            android:text="HISTORIAL"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="34sp"
@@ -37,8 +63,10 @@
                 <TextView
                     android:id="@+id/textHistorial"
                     android:layout_width="match_parent"
+                    android:fontFamily="@font/roboto_medium"
                     android:layout_height="match_parent"
-                    android:text="TextView" />
+                    android:text="TextView"
+                    android:textColor="#000000" />
             </LinearLayout>
         </ScrollView>
 

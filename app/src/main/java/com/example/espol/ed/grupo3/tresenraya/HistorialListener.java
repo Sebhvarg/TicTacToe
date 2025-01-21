@@ -35,10 +35,11 @@ public class HistorialListener extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                txtHistorial.setText("");
-                HistorialManager.getInstance().clear();
+
                 Intent intent = new Intent(HistorialListener.this, MainActivity.class);
                 startActivity(intent);
+                HistorialManager.getInstance().clear();
+
             }
         });
     }
