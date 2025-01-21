@@ -25,22 +25,34 @@
             android:textStyle="bold" />
 
         <ScrollView
-            android:layout_width="299dp"
-            android:layout_height="604dp">
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginTop="10dp"
+            android:background="@color/backround_light"
+            android:padding="16dp"
+            app:cornerRadius="12dp"
+            app:strokeColor="@color/primary_light"
+            app:strokeWidth="2dp">
 
             <LinearLayout
-                android:layout_width="300dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/textHistorial"
+                    android:fontFamily="@font/roboto_medium"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="TextView" />
+                    android:layout_height="wrap_content"
+                    android:text="Historial vacío"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:lineSpacingExtra="8dp"
+                    android:padding="8dp" />
             </LinearLayout>
         </ScrollView>
+
 
     </LinearLayout>
 
