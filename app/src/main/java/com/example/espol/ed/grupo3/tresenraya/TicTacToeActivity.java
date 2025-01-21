@@ -60,7 +60,8 @@ public class TicTacToeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tic_tac_toe);
         //AQUI ES PARA EL HISTORIAL
-        historialManager = HistorialManager.getInstance(this);
+        historialManager = HistorialManager.getInstance();
+        historialManager.setContext(this);
 
         ReproductorControlador.getInstance().init(this, R.raw.music);
         ReproductorControlador.getInstance().play();
