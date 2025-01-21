@@ -12,6 +12,34 @@
         android:background="@drawable/xobg"
         android:orientation="vertical">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="61dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/btnVolver"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="#00FFFFFF"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/exit" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="651dp"
+                android:layout_height="26dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Volver al menú principal"
+                android:textAlignment="viewStart"
+                android:textColor="@color/black" />
+
+        </LinearLayout>
+
         <TextView
             android:id="@+id/textTitle"
             android:layout_width="wrap_content"

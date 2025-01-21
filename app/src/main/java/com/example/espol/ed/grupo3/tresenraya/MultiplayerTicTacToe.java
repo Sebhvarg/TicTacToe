@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
@@ -13,7 +12,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.espol.ed.grupo3.tresenraya.Modelo.Juego;
 import com.example.espol.ed.grupo3.tresenraya.Modelo.Tablero;
 
 public class MultiplayerTicTacToe extends AppCompatActivity {

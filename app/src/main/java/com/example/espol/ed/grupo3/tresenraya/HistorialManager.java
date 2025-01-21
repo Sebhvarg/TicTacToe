@@ -1,7 +1,9 @@
 package com.example.espol.ed.grupo3.tresenraya;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +24,8 @@ public class HistorialManager extends AppCompatActivity {
     private String ganador;
     private final String fechaPartida;
     private String modoJuego;
+
+    private ImageButton btn;
 
     private TextView txtHistorial;
 
@@ -132,6 +136,12 @@ public class HistorialManager extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_historial);
         txtHistorial = findViewById(R.id.textHistorial);
+        btn = findViewById(R.id.btnVolver);
+        btn.setOnClickListener(v -> {
+            Intent intent = new Intent(HistorialManager.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        });
 
     }
 
