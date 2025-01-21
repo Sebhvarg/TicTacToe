@@ -19,11 +19,14 @@ public class GanadorActivity extends AppCompatActivity {
         TextView textoGanador = findViewById(R.id.textTitle);
         Button botonReiniciar = findViewById(R.id.botonReiniciar);
         Button botonHistorial = findViewById(R.id.btnhistorial);
-        Button botonReiniciarPartida = findViewById(R.id.botonReiniciarPartida);
+        Button botonVerArbol = findViewById(R.id.botonVerArbol);  // Nuevo botón
+
         View layoutPrincipal = findViewById(R.id.layoutPrincipal);
         Animation expandAnimation = AnimationUtils.loadAnimation(this, R.anim.expand_animation);
         layoutPrincipal.startAnimation(expandAnimation);
         String ganador = getIntent().getStringExtra("GANADOR");
+        boolean esNivelExperto = getIntent().getBooleanExtra("EXPERTO", false);  // Información del nivel de IA
+
         Log.d("GANADOR_RECEPCIONADO", ganador);
 
         if (ganador != null) {
@@ -46,14 +49,9 @@ public class GanadorActivity extends AppCompatActivity {
             }
         }
 
-        String modoJuego = getIntent().getStringExtra("MODO_JUEGO");
-        if (modoJuego == null) {
-            modoJuego = "SINGLEPLAYER"; // Valor por defecto si no se pasa el modo de juego
-        }
-
-        // Ocultar botón historial si es multijugador
-        if ("MULTIJUGADOR".equals(modoJuego)) {
-            botonHistorial.setVisibility(View.GONE);
+        // Configurar visibilidad del botón "Ver Árbol"
+        if (!esNivelExperto) {
+            botonVerArbol.setVisibility(View.GONE);
         }
 
         botonReiniciar.setOnClickListener(v -> {
@@ -62,26 +60,16 @@ public class GanadorActivity extends AppCompatActivity {
             finish();
         });
 
-
         botonHistorial.setOnClickListener(v -> {
-            Intent intent = new Intent(GanadorActivity.this, HistorialListener.class);
+            Intent intent = new Intent(GanadorActivity.this, HistorialManager.class);
             startActivity(intent);
             finish();
         });
 
-
-        String finalModoJuego = modoJuego;
-        botonReiniciarPartida.setOnClickListener(v -> reiniciarPartida(finalModoJuego));
-
-    }
-    private void reiniciarPartida(String modoJuego) {
-        Intent intent;
-        if ("MULTIJUGADOR".equals(modoJuego)) {
-            intent = new Intent(GanadorActivity.this, MultiplayerTicTacToe.class);
-        } else {
-            intent = new Intent(GanadorActivity.this, TicTacToeActivity.class);
-        }
-        startActivity(intent);
-        finish();
+        // Configurar click listener para el botón "Ver Árbol"
+        botonVerArbol.setOnClickListener(v -> {
+            Intent intent = new Intent(GanadorActivity.this, VerArbolActivity.class);
+            startActivity(intent);
+        });
     }
 }

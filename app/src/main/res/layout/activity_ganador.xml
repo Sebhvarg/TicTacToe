@@ -71,5 +71,21 @@
             app:strokeWidth="2dp" />
 
     </LinearLayout>
+    <Button
+        android:id="@+id/botonVerArbol"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/black"
+        android:fontFamily="@font/roboto_medium"
+        android:insetTop="0dp"
+        android:text="Ver Árbol"
+        android:textAlignment="center"
+        android:textColor="@color/backround_light"
+        android:textSize="24sp"
+        app:cornerRadius="10dp"
+        app:strokeColor="@color/primary_light"
+        app:strokeWidth="2dp" />
+
 
 </RelativeLayout>

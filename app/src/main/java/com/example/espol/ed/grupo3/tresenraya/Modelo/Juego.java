@@ -12,6 +12,10 @@ import android.widget.TextView;
 import com.example.espol.ed.grupo3.tresenraya.GanadorActivity;
 import com.example.espol.ed.grupo3.tresenraya.HistorialManager;
 import com.example.espol.ed.grupo3.tresenraya.R;
+import com.unnamed.b.atv.model.TreeNode;
+import com.unnamed.b.atv.view.AndroidTreeView;
+
+
 
 public class Juego {
     private Context context;
@@ -24,6 +28,8 @@ public class Juego {
     private TextView playertext, cputext;
     private ImageView playerimg, cpuimg;
     private HistorialManager historialManager;
+
+    private TreeNode rootNode;
 
     public Tablero getTablero(){
         return tablero;
@@ -42,6 +48,11 @@ public class Juego {
         this.playerimg = playerimg;
         this.cpuimg = cpuimg;
         this.historialManager = historialManager;
+        rootNode = TreeNode.root();
+
+    }
+    public TreeNode getRootNode() {
+        return rootNode;
     }
 
     private boolean verificarEstadoDelJuego() {
@@ -61,6 +72,13 @@ public class Juego {
             return true;
         }
         return false;
+
+
+    }
+
+    public void agregarNodoAlArbol(String texto) {
+        TreeNode childNode = new TreeNode(new TreeNodeData(texto));
+        rootNode.addChild(childNode);
     }
 
     public void turnoComputadora() {
@@ -69,6 +87,8 @@ public class Juego {
         }
         deshabilitarBotones();
         int[] mejorMovimiento = (esNivelExperto) ? experto.calcularMovimiento() : medio.calcularMovimiento();
+        agregarNodoAlArbol("Movimiento: [" + mejorMovimiento[0] + "," + mejorMovimiento[1] + "]");
+
         if (mejorMovimiento[0] != -1 && mejorMovimiento[1] != -1) {
             playertext.animate().alpha(0.2f).setDuration(500).start();
             playerimg.animate().alpha(0.2f).setDuration(500).start();
